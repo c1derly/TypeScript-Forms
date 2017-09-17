@@ -1,0 +1,56 @@
+﻿<style>
+    th{
+        border: solid 1px;
+       padding: 3px;
+    }
+</style>
+
+
+<div class="jumbotron">
+    <div var="divControl"></div>
+<div TSClass="TSF.TestController" var="controller">
+        <div var=".divControl"></div>
+    <input type="checkbox"  indeterminate="true" onchange="alert(sender.element.checked); alert(this.message);" var=".cbxTest" value="Test" />
+        <div style="display:none" var=".dsTestTable" pageSize="10" dataUrl="http://localhost:49980/api/HelloWorld/tableTestNoPage" clientPaging="true" TSClass="TSF.Data.AsyncDataSource"></div>
+        <div var=".member1">
+            <div TSClass="TSF.UI.TSControl"  args="here is text" onclick="alert(args);" var=".subMember2">click here</div>
+        </div>
+        <div TSClass="TSF.UI.TSControl" var="controller2">
+            <button type="button" var =".btnTest" context.abc="this worked" onclick="controller.dsTestTable.refresh();" TSClass="TSF.UI.Button">button test</button>
+            <div TSClass="TSF.UI.TSControl" var=".member1"></div>
+            
+        </div>
+        <div></div>
+        <table var=".grid"  enableSorting="true" ColumnsResizable="true" clientPaging="true" pageSize="10" dataSource=".dsTestTable"  selection="MULTI" >
+
+        </table>
+    </div>
+</div>
+
+<input var="radRed" TSClass="TSF.UI.RadioButton" name="color" value="red" /> Red
+<input var="redBlue" TSClass="TSF.UI.RadioButton" name="color" value="blue" /> Blue
+<input var="radOrange" TSClass="TSF.UI.RadioButton" name="color" value="ornage" /> Orange
+<select id="selectTest" var="selectTest" TSClass="TSF.UI.MultiSelect">
+    <option value="5">abc</option>
+    <option value="6">abc2</option>
+    <option value="7">a3bc</option>
+</select>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
+        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
+        is an ideal platform for building RESTful applications on the .NET Framework.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
+    </div>
+</div>

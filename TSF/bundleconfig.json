@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "Scripts/TSF/FrameworkOutput/TSF.min.js",
+    "inputFiles": [
+      "Scripts/TSF/FrameworkOutput/TSF.js"
+    ]
+  }
+]

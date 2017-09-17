@@ -1,0 +1,15 @@
+﻿range
+password
+number
+text area
+video
+canvas
+audio
+anchor
+popup
+form(like windows form)
+file selector
+tree control
+pager
+filter
+filter grid extension
