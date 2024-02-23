@@ -1,3 +1,502 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var TSF;
+(function (TSF) {
+    var Base;
+    (function (Base) {
+        /**
+         * Standard exception for error handeling
+         */
+        var Exception = /** @class */ (function () {
+            /**
+             * Exception used for throwing
+             * @param message The message for the exception
+             */
+            function Exception(ExceptionMessage) {
+                this.ExceptionMessage = ExceptionMessage;
+            }
+            return Exception;
+        }());
+        Base.Exception = Exception;
+    })(Base = TSF.Base || (TSF.Base = {}));
+})(TSF || (TSF = {}));
+/// <reference path="..\Base\Exception.ts" />
+var TSF;
+/// <reference path="..\Base\Exception.ts" />
+(function (TSF) {
+    var Events;
+    (function (Events) {
+        /**
+         * Generic event handeler
+         */
+        var EventHandler = /** @class */ (function () {
+            function EventHandler() {
+                /** array of subscribers */
+                this.events = [];
+            }
+            /**
+             * Adds a listener to the event object
+             * @param method - method to call when the event is triggered
+             * @param callBackObject - object to be used as the this when firing the event
+             */
+            EventHandler.prototype.add = function (method, callBackObject) {
+                this.events.push(new TSF.DS.Tuple(method, callBackObject));
+            };
+            /**
+             * Removes a subscription from the event object
+             * @param method - method to unsubscribe
+             * @param callBackObject - object that was listening that wants to unsubscribe
+             */
+            EventHandler.prototype.remove = function (method, callBackObject) {
+                var count = this.events.length;
+                this.events = this.events.filter(function (x) { return x.Item2 !== callBackObject && x.Item1 !== method; });
+                if (count === this.events.length)
+                    throw new TSF.Base.Exception("Event not found to remove");
+            };
+            /**
+             * Clears all events from the event handeler
+             */
+            EventHandler.prototype.clearEvents = function () {
+                this.events = [];
+            };
+            /**
+             * Fires the event
+             * @param args - the arguments to pass to the listening method.
+             */
+            EventHandler.prototype.fire = function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                for (var i = 0; i < this.events.length; i++) {
+                    this.events[i].Item1.apply(this.events[i].Item2, args);
+                }
+            };
+            return EventHandler;
+        }());
+        Events.EventHandler = EventHandler;
+    })(Events = TSF.Events || (TSF.Events = {}));
+})(TSF || (TSF = {}));
+/// <reference path=".\EventHandler.ts" />
+var TSF;
+/// <reference path=".\EventHandler.ts" />
+(function (TSF) {
+    var Events;
+    (function (Events) {
+        /**
+         * Event handeler with no input arguments
+         */
+        var EmptyEvent = /** @class */ (function (_super) {
+            __extends(EmptyEvent, _super);
+            function EmptyEvent() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            EmptyEvent.prototype.fire = function () {
+                _super.prototype.fire.call(this);
+            };
+            return EmptyEvent;
+        }(Events.EventHandler));
+        Events.EmptyEvent = EmptyEvent;
+    })(Events = TSF.Events || (TSF.Events = {}));
+})(TSF || (TSF = {}));
+/// <reference path="..\Base\Exception.ts" />
+var TSF;
+/// <reference path="..\Base\Exception.ts" />
+(function (TSF) {
+    var Remote;
+    (function (Remote) {
+        /**
+         *  Standard exception with additional detail from a remote call
+         */
+        var RemoteException = /** @class */ (function (_super) {
+            __extends(RemoteException, _super);
+            function RemoteException(message) {
+                return _super.call(this, message) || this;
+            }
+            return RemoteException;
+        }(TSF.Base.Exception));
+        Remote.RemoteException = RemoteException;
+    })(Remote = TSF.Remote || (TSF.Remote = {}));
+})(TSF || (TSF = {}));
+/// <reference path="..\..\typings\jquery\jquery.d.ts" />
+/// <reference path="..\Events\EmptyEvent.ts" />
+/// <reference path="..\Base\Exception.ts" />
+/// <reference path=".\RemoteException.ts" />
+var TSF;
+/// <reference path="..\..\typings\jquery\jquery.d.ts" />
+/// <reference path="..\Events\EmptyEvent.ts" />
+/// <reference path="..\Base\Exception.ts" />
+/// <reference path=".\RemoteException.ts" />
+(function (TSF) {
+    var Remote;
+    (function (Remote) {
+        /** request type for remote calls */
+        var RequestType;
+        (function (RequestType) {
+            RequestType[RequestType["POST"] = 0] = "POST";
+            RequestType[RequestType["GET"] = 1] = "GET";
+            RequestType[RequestType["PUT"] = 2] = "PUT";
+            RequestType[RequestType["DELETE"] = 3] = "DELETE";
+            RequestType[RequestType["TRACE"] = 4] = "TRACE";
+            RequestType[RequestType["CONNECT"] = 5] = "CONNECT";
+        })(RequestType = Remote.RequestType || (Remote.RequestType = {}));
+        /**
+         * Used to make remote calls a little bit easier by providing a fluent style remote call as well as an inline method.
+         * This provides a prototype so you know which parameters are expected.  It also parses out the exception from the remote server if one is sent.
+         */
+        var RemoteCall = /** @class */ (function () {
+            /**
+             * Creates a command to send to the server using fluent style.
+             * @param url The url to request
+             * @param data The data to send to the server
+             */
+            function RemoteCall(url, data) {
+                /** The type of request to make (POST, GET, PUT, DELETE, TRACE, CONNECT) */
+                this.requestType = RequestType.POST;
+                /** Content type of the request (example: application/json)*/
+                this.contentType = "application/json";
+                /** Datatype of the call.  */
+                this.dataType = undefined;
+                /** Header information to send to the server.  Each member and value of the object becomes a header element and its value*/
+                this.reqHeaders = {};
+                /** Denotes that start and end events should consider this remote call when determining when to fire */
+                this.fireEvents = false;
+                this.url = url;
+                this.data = data;
+            }
+            /**
+             * Sets advanced options for the remote command
+             * @param requestType The type of request to make (POST, GET, PUT, DELETE, TRACE, CONNECT)
+             * @param fireEvents Denotes that start and end events should consider this remote call when determining when to fire
+             * @param contentType Content type of the request (example: application/json)
+             * @param dataType Datatype of the call.
+             */
+            RemoteCall.prototype.advancedOptions = function (requestType, fireEvents, contentType, dataType) {
+                if (requestType !== undefined)
+                    this.requestType = requestType;
+                if (contentType !== undefined)
+                    this.contentType = contentType;
+                if (fireEvents !== undefined)
+                    this.fireEvents = fireEvents;
+                this.dataType = dataType;
+                return this;
+            };
+            /**
+             * Adds header information to the remote call
+             * @param headers - an object whose attributes will be used as headers
+             */
+            RemoteCall.prototype.headers = function (headers) {
+                this.reqHeaders = headers;
+                return this;
+            };
+            /**
+             * Calls a remote method and returns a promise that can be used with async await.
+             */
+            RemoteCall.prototype.call = function () {
+                return __awaiter(this, void 0, void 0, function () {
+                    var _this = this;
+                    return __generator(this, function (_a) {
+                        return [2 /*return*/, new Promise(function (resolve, reject) {
+                                $.ajax({
+                                    data: JSON.stringify(_this.data),
+                                    url: _this.url,
+                                    type: RequestType[_this.requestType],
+                                    contentType: _this.contentType,
+                                    dataType: _this.dataType,
+                                    async: true,
+                                    beforeSend: function (request) {
+                                        if (_this.reqHeaders !== undefined && _this.reqHeaders !== null) {
+                                            for (var key in _this.reqHeaders) {
+                                                request.setRequestHeader(key, _this.reqHeaders[key]);
+                                            }
+                                        }
+                                    },
+                                }).done(function (data) {
+                                    if (_this.fireEvents) {
+                                        Remote.RemoteCall.currentCallCount--;
+                                        if (Remote.RemoteCall.currentCallCount === 0)
+                                            Remote.RemoteCall.OnStop.fire();
+                                    }
+                                    resolve(data);
+                                }).fail(function (jqXHR, textStatus, errorThrown) {
+                                    if (_this.fireEvents) {
+                                        Remote.RemoteCall.currentCallCount--;
+                                        if (Remote.RemoteCall.currentCallCount === 0)
+                                            Remote.RemoteCall.OnStop.fire();
+                                    }
+                                    reject(Remote.RemoteCall.constructException(jqXHR, textStatus, errorThrown));
+                                });
+                                if (_this.fireEvents) {
+                                    if (Remote.RemoteCall.currentCallCount === 0)
+                                        Remote.RemoteCall.OnStart.fire();
+                                    Remote.RemoteCall.currentCallCount++;
+                                }
+                            })];
+                    });
+                });
+            };
+            /**
+             * And inline remote call that can be called statically
+             * @param url - The url to make the remote call to
+             * @param data - The data to use as input
+             * @param requestType - (optional) request type such as POST,GET etc
+             * @param fireEvents - Option to fire start and end events to the remote call.  Usually used to dispalying loading signs
+             * @param reqHeaders - Additional headers to add to request
+             * @param contentType - content type default is application/json
+             * @param dataType - the data type of the call.
+             */
+            RemoteCall.callInline = function (url, data, requestType, fireEvents, reqHeaders, contentType, dataType) {
+                var _this = this;
+                if (requestType === void 0) { requestType = RequestType.POST; }
+                if (fireEvents === void 0) { fireEvents = false; }
+                if (contentType === void 0) { contentType = "application/json"; }
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        data: JSON.stringify(data),
+                        url: url,
+                        type: RequestType[requestType],
+                        contentType: contentType,
+                        dataType: dataType,
+                        async: true,
+                        beforeSend: function (request) {
+                            if (reqHeaders !== undefined && reqHeaders !== null) {
+                                for (var key in reqHeaders) {
+                                    request.setRequestHeader(key, reqHeaders[key]);
+                                }
+                            }
+                        },
+                    }).done(function (data) {
+                        if (fireEvents) {
+                            Remote.RemoteCall.currentCallCount--;
+                            if (Remote.RemoteCall.currentCallCount === 0)
+                                Remote.RemoteCall.OnStop.fire();
+                        }
+                        resolve(data);
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        if (fireEvents) {
+                            Remote.RemoteCall.currentCallCount--;
+                            if (Remote.RemoteCall.currentCallCount === 0)
+                                Remote.RemoteCall.OnStop.fire();
+                        }
+                        reject(_this.constructException(jqXHR, textStatus, errorThrown));
+                    });
+                    if (fireEvents) {
+                        if (Remote.RemoteCall.currentCallCount === 0)
+                            Remote.RemoteCall.OnStart.fire();
+                        Remote.RemoteCall.currentCallCount++;
+                    }
+                });
+            };
+            /**
+             * Creates an exception based on the response of a call
+             * @param XMLHttpRequest - the response from the remote call
+             * @param textStatus - the status of the call
+             * @param errorThrown - the errorthrown of the call
+             * @param url - the url requested from the call
+             */
+            RemoteCall.constructException = function (XMLHttpRequest, textStatus, errorThrown, url) {
+                var exception = null;
+                try {
+                    exception = XMLHttpRequest.responseText ? $.parseJSON(XMLHttpRequest.responseText) : new Remote.RemoteException("no response");
+                }
+                catch (error2) {
+                    exception = new Remote.RemoteException();
+                }
+                exception.TextStatus = textStatus;
+                exception.jQueryXHR = XMLHttpRequest;
+                exception.url = url;
+                exception.ErrorThrown = errorThrown;
+                console.error(exception);
+                return exception;
+            };
+            /** Fires when a remote call has been fired and there currently isn't another remote call in progress that has fire events set to true */
+            RemoteCall.OnStart = new TSF.Events.EmptyEvent();
+            /** Fired when all remote calls are finished.  This means that if more then one call is made before the previous one has finished
+            then all remote calls have to finish before the OnStop event is fired if all methods are marked with fire events.  */
+            RemoteCall.OnStop = new TSF.Events.EmptyEvent();
+            /** keeps track of the current number of remote calls being done through this class */
+            RemoteCall.currentCallCount = 0;
+            return RemoteCall;
+        }());
+        Remote.RemoteCall = RemoteCall;
+    })(Remote = TSF.Remote || (TSF.Remote = {}));
+})(TSF || (TSF = {}));
+/// <reference path="..\Events\EmptyEvent.ts" />
+/// <reference path="..\Remote\Remote.ts" />
+var TSF;
+/// <reference path="..\Events\EmptyEvent.ts" />
+/// <reference path="..\Remote\Remote.ts" />
+(function (TSF) {
+    var Base;
+    (function (Base) {
+        /**
+         * Base functionality for TSF that constructs the elements based on the html attributes.
+         */
+        var TSBase = /** @class */ (function () {
+            function TSBase() {
+            }
+            /**
+             * Goes through the HTML and constructs the controls marked in the html
+             * @param element
+             */
+            TSBase.constructControls = function (element) {
+                if (TSBase.defaultTypes === undefined)
+                    TSBase.defaultTypes = {
+                        BUTTON: TSF.UI.Button, INPUT: { CHECKBOX: TSF.UI.Checkbox, TEXT: TSF.UI.TextBox, SUBMIT: TSF.UI.Button, BUTTON: TSF.UI.Button, RADIO: TSF.UI.RadioButton }, IMG: TSF.UI.Image, TABLE: TSF.UI.Grid.WunderGrid, SELECT: { '': TSF.UI.DropDown, MULTIPLE: TSF.UI.MultiSelect }
+                    };
+                var elements = new Array();
+                elements.push({ ele: element, name: "" });
+                var curName = "";
+                while (elements.length > 0) {
+                    var link = elements.pop();
+                    var node = link.ele;
+                    curName = link.name;
+                    var tsClass = node.getAttribute('TSClass');
+                    var name = node.getAttribute('var');
+                    var parent_1 = link.logicalParent;
+                    if (tsClass !== null && tsClass !== undefined) {
+                        if (name !== undefined && name.length > 0) {
+                            var res = TSBase.getRelativeObjects.apply(this, [name, parent_1]);
+                            var clss = eval(tsClass);
+                            var ctrl = new clss(node, res.parent);
+                            if (!res.parent)
+                                window[res.att] = ctrl;
+                            else
+                                res.parent[res.att] = ctrl;
+                            parent_1 = ctrl;
+                        }
+                        else {
+                            var ctrl = eval('new ' + tsClass + '(node)');
+                            parent_1 = ctrl;
+                        }
+                    }
+                    else if (name !== null && name !== undefined) {
+                        var res = TSBase.getRelativeObjects.apply(this, [name, parent_1]);
+                        var type = node.nodeName.toUpperCase();
+                        var def = TSBase.defaultTypes[type];
+                        if (type == "INPUT") {
+                            type = node.getAttribute('type');
+                            if (type !== undefined && type !== null)
+                                type = type.toUpperCase();
+                            def = def[type];
+                        }
+                        else if (type == "SELECT") {
+                            if (node.hasAttribute('MULTIPLE'))
+                                def = def['MULTIPLE'];
+                            else
+                                def = def[''];
+                        }
+                        var ctrl = void 0;
+                        if (def !== undefined && def !== null)
+                            ctrl = new def(node, res.parent);
+                        else
+                            ctrl = new TSF.UI.TSControl(node, res.parent);
+                        if (!res.parent)
+                            window[res.att] = ctrl;
+                        else
+                            res.parent[res.att] = ctrl;
+                        parent_1 = ctrl;
+                    }
+                    var len = node.children.length;
+                    for (var i = 0; i < len; i++) {
+                        elements.push({ ele: node.children[len - i - 1], logicalParent: parent_1 });
+                    }
+                }
+            };
+            /**
+            * Not intended for use outside of framework.  Used to handle relative paths in the var element of
+            * html elements.
+            * @param path - path to assign this control to.
+            */
+            TSBase.getRelativeObjects = function (path, parentNode) {
+                var pth = path.trim();
+                var splitPath = pth.split(/[\.]/g);
+                var len = splitPath.length;
+                len = len - 1;
+                if (pth[0] !== '.') {
+                    var att = splitPath.pop();
+                    var par = eval(splitPath.join('.'));
+                    return { parent: par, att: att };
+                }
+                var currentNode;
+                if (splitPath[0] == '')
+                    currentNode = parentNode;
+                for (var i = 1; i < len; i++) {
+                    if (!currentNode || splitPath[i] !== '')
+                        break;
+                    currentNode = currentNode.logicalParent;
+                }
+                if (currentNode) {
+                    var temp = splitPath.slice(i, splitPath.length);
+                    var att = temp.pop();
+                    var par_1;
+                    if (temp.length == 0)
+                        par_1 = currentNode;
+                    else
+                        par_1 = currentNode[temp.join('.')];
+                    return { parent: par_1, att: att };
+                }
+            };
+            TSBase.onInit = new TSF.Events.EmptyEvent();
+            TSBase.defaultTypes = undefined;
+            return TSBase;
+        }());
+        Base.TSBase = TSBase;
+        $(function () {
+            TSBase.constructControls.apply(window, [document.documentElement]);
+            TSBase.onInit.fire();
+        });
+    })(Base = TSF.Base || (TSF.Base = {}));
+})(TSF || (TSF = {}));
 var _this = this;
 (function () {
     var method = function (root) {
@@ -224,7 +723,7 @@ var TSF;
 (function (TSF) {
     var UI;
     (function (UI) {
-        var LogicalControl = (function () {
+        var LogicalControl = /** @class */ (function () {
             /**
              * A logical control that can be used in the html markup or just constructed plainly in javacsript
              * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
@@ -404,7 +903,7 @@ var TSF;
         /**
          * A class that represents an sql criteria
          */
-        var Criteria = (function () {
+        var Criteria = /** @class */ (function () {
             /**
              * Creates a new criteria with the specified constraint
              * @param column - the column to the compare the value to
@@ -425,54 +924,16 @@ var TSF;
         Data.Criteria = Criteria;
     })(Data = TSF.Data || (TSF.Data = {}));
 })(TSF || (TSF = {}));
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
-    return { next: verb(0), "throw": verb(1), "return": verb(2) };
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 /// <reference path="..\UI\LogicalControl.ts" />
 /// <reference path=".\Criteria.ts" />
 var TSF;
+/// <reference path="..\UI\LogicalControl.ts" />
+/// <reference path=".\Criteria.ts" />
 (function (TSF) {
     var Data;
     (function (Data) {
         /**An asynchronous datasource.s**/
-        var DataSource = (function (_super) {
+        var DataSource = /** @class */ (function (_super) {
             __extends(DataSource, _super);
             function DataSource(ele, logicalParent) {
                 var _this = _super.call(this, ele, logicalParent) || this;
@@ -495,14 +956,14 @@ var TSF;
                 get: function () {
                     return this.criteria;
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             /**Calls the data retrieval method.**/
             DataSource.prototype.callDataMethod = function () {
                 return __awaiter(this, void 0, void 0, function () {
-                    var _this = this;
                     var startIndex, recordCount, query;
+                    var _this = this;
                     return __generator(this, function (_a) {
                         if (this.pageSize === undefined)
                             this.pageSize = this.maxRecords;
@@ -613,11 +1074,12 @@ var TSF;
 })(TSF || (TSF = {}));
 /// <reference path="..\Data\DataSource.ts" />
 var TSF;
+/// <reference path="..\Data\DataSource.ts" />
 (function (TSF) {
     var Data;
     (function (Data) {
         /**An asynchronous datasource.s**/
-        var AsyncDataSource = (function (_super) {
+        var AsyncDataSource = /** @class */ (function (_super) {
             __extends(AsyncDataSource, _super);
             function AsyncDataSource() {
                 var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -654,13 +1116,14 @@ var TSF;
 })(TSF || (TSF = {}));
 /// <reference path=".\Criteria.ts" />
 var TSF;
+/// <reference path=".\Criteria.ts" />
 (function (TSF) {
     var Data;
     (function (Data) {
         /**
          * A class used to hold criteria for an sql call
          */
-        var Condition = (function () {
+        var Condition = /** @class */ (function () {
             /**
              * Creates a new condition with an optional starting criteria
              * @param column - the column name to compare
@@ -686,7 +1149,32 @@ var TSF;
 (function (TSF) {
     var Data;
     (function (Data) {
-        var Filtering = (function () {
+        /**
+         * Holds a group of criteria to be enclosed in paranthesis
+         */
+        var CriteriaGroup = /** @class */ (function () {
+            /**
+             * how to join the group onto the previous criteria.
+             * @param join
+             */
+            function CriteriaGroup(join) {
+                if (join === void 0) { join = Data.CriteriaJoin.And; }
+                /** the list of criteria for the group*/
+                this.criteria = new Array();
+                /** sub groups of the groups*/
+                this.groups = new Array();
+                this.join = join;
+            }
+            return CriteriaGroup;
+        }());
+        Data.CriteriaGroup = CriteriaGroup;
+    })(Data = TSF.Data || (TSF.Data = {}));
+})(TSF || (TSF = {}));
+var TSF;
+(function (TSF) {
+    var Data;
+    (function (Data) {
+        var Filtering = /** @class */ (function () {
             function Filtering() {
             }
             Filtering.filterOnCondition = function (data, filters, columnHash) {
@@ -852,1691 +1340,311 @@ var TSF;
         Data.Filtering = Filtering;
     })(Data = TSF.Data || (TSF.Data = {}));
 })(TSF || (TSF = {}));
-/// <reference path=".\LogicalControl.ts" />
-var TSF;
-(function (TSF) {
-    var UI;
-    (function (UI) {
-        var TSControl = (function (_super) {
-            __extends(TSControl, _super);
-            /**
-             * A Base control that can be used in the html markup or just constructed plainly in javacsript
-             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
-             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
-             */
-            function TSControl(ele, logicalParent) {
-                var _this = _super.call(this, ele, logicalParent) || this;
-                _this.context = {};
-                if (ele !== undefined) {
-                    var clickEvent = _this.jElement.attr('onclick');
-                    if (clickEvent !== null && clickEvent !== undefined) {
-                        _this.OnClick.add(function (sender, args) { eval(clickEvent); }, (logicalParent === undefined) ? _this : logicalParent);
-                    }
-                    var doubleClickEvent = _this.jElement.attr('ondblclick');
-                    if (doubleClickEvent !== null && doubleClickEvent !== undefined) {
-                        _this.OnDoubleClick.add(function (sender, args) { eval(doubleClickEvent); }, (logicalParent === undefined) ? _this : logicalParent);
-                    }
-                    _this.loadConfiguration('args');
-                }
-                return _this;
-            }
-            Object.defineProperty(TSControl.prototype, "OnClick", {
-                /** The on click event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
-                get: function () {
-                    var _this = this;
-                    if (this.onClick === undefined) {
-                        this.onClick = new TSF.Events.UIEvent();
-                        this.element.onclick = function () { return _this.onClick.fire(_this, _this.args); };
-                    }
-                    return this.onClick;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(TSControl.prototype, "OnDoubleClick", {
-                /** The on double click event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
-                get: function () {
-                    var _this = this;
-                    if (this.onDoubleClick === undefined) {
-                        this.onDoubleClick = new TSF.Events.UIEvent();
-                        this.element.ondblclick = function () { return _this.onDoubleClick.fire(_this, _this.args); };
-                    }
-                    return this.onDoubleClick;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Appends a control to the child elements of the current control
-             * @param control - the control to append
-             */
-            TSControl.prototype.Append = function (control) {
-                this.jElement.append(control.jElement);
-            };
-            /**
-             * Insert control before the provided control in the html
-             * @param control - the control to insert this object before
-             */
-            TSControl.prototype.InsertBefore = function (control) {
-                this.jElement.insertBefore(control.jElement);
-            };
-            /**
-             * Insert control after the provided control in the html
-             * @param control - the control to insert this object after
-             */
-            TSControl.prototype.InsertAfter = function (control) {
-                this.jElement.insertAfter(control.jElement);
-            };
-            /**
-             * clears all of the child html elements from the control
-             */
-            TSControl.prototype.emptyContent = function () {
-                this.jElement.empty();
-            };
-            Object.defineProperty(TSControl.prototype, "TagName", {
-                /** returns the tag name of the element*/
-                get: function () {
-                    return this.element.tagName;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(TSControl.prototype, "Class", {
-                /** returns the class name of the element */
-                get: function () {
-                    return this.element.className;
-                },
-                /** Sets the class name of the element */
-                set: function (val) {
-                    this.element.className = val;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(TSControl.prototype, "Attributes", {
-                /** The attributes of the element */
-                get: function () {
-                    return this.element.attributes;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(TSControl.prototype, "Style", {
-                /** the style of the element */
-                get: function () {
-                    return this.element.style;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(TSControl.prototype, "Text", {
-                /** Text of the html element */
-                get: function () {
-                    return this.jElement.text();
-                },
-                /** Text of the html element */
-                set: function (val) {
-                    this.jElement.text(val);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(TSControl.prototype, "Value", {
-                /** Value of the html element */
-                get: function () {
-                    return this.jElement.val();
-                },
-                /** Value of the html element */
-                set: function (val) {
-                    this.jElement.val(val);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(TSControl.prototype, "Disabled", {
-                /** Get or set the disabled status of the element */
-                get: function () {
-                    return this.disabled;
-                },
-                /** Get or set the disabled status of the element */
-                set: function (value) {
-                    if (value !== this.disabled) {
-                        if (value === true) {
-                            this.disabled = true;
-                            this.jElement.removeAttr('disabled');
-                        }
-                        else {
-                            this.disabled = false;
-                            this.jElement.attr('disabled', 'disabled');
-                        }
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Hides the control (display:none)
-             */
-            TSControl.prototype.hide = function () {
-                this.previousDisplay = this.element.style.display;
-                this.jElement.hide();
-            };
-            /**
-             * Shows the control.  Sets the previous display type if hide was used previously
-             */
-            TSControl.prototype.show = function () {
-                if (!this.previousDisplay && this.previousDisplay.toUpperCase() !== "NONE")
-                    this.element.style.display = this.previousDisplay;
-                else
-                    this.jElement.show();
-            };
-            /**
-             * load html content into the body construct any controls used specified in the markup.  This can be used to refer to
-             * this object in the var attribute in this method.
-             * @param data - html data to load into the control
-             */
-            TSControl.prototype.loadHtml = function (data) {
-                if (data !== undefined) {
-                    if (this.jElement === undefined) {
-                        this.jElement = $(data);
-                        this.element = this.jElement[0];
-                        TSF.Base.TSBase.constructControls.apply(this, [this.element]);
-                    }
-                    else {
-                        this.jElement.append($(data));
-                        var children = this.element.children;
-                        var len = children.length;
-                        for (var i = 0; i < len; i++)
-                            TSF.Base.TSBase.constructControls.apply(this, [children[i]]);
-                    }
-                }
-            };
-            return TSControl;
-        }(UI.LogicalControl));
-        TSControl.eventList = {};
-        UI.TSControl = TSControl;
-    })(UI = TSF.UI || (TSF.UI = {}));
-})(TSF || (TSF = {}));
-/// <reference path=".\TSControl.ts" />
-var TSF;
-(function (TSF) {
-    var UI;
-    (function (UI) {
-        /**
-      * Drop down control
-      */
-        var DropDown = (function (_super) {
-            __extends(DropDown, _super);
-            /**
-             * Drop down control
-             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
-             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
-             */
-            function DropDown(ele, logicalParent) {
-                var _this = _super.call(this, ele, logicalParent) || this;
-                /** Event fired when the selected item list has changed */
-                _this.onSelectionChanged = new TSF.Events.GenericEvent();
-                /** list of drop down items in the control */
-                _this.items = [];
-                /** the data source for the control */
-                _this.dataSource = undefined;
-                _this.checkEmptyEle('select');
-                _this.loadConfiguration('dataSource', 'TextKey', 'ValueKey');
-                var onchanged = _this.jElement.attr('onchange');
-                if (onchanged !== null && onchanged !== undefined) {
-                    _this.OnSelectionChanged.add(function (sender, args) { eval(onchanged); }, (logicalParent === undefined) ? _this : logicalParent);
-                }
-                if (_this.TextKey === undefined) {
-                    _this.TextKey = "text";
-                }
-                if (_this.ValueKey === undefined) {
-                    _this.ValueKey = "value";
-                }
-                if (_this.dataSource)
-                    _this.DataSource = _this.getRelativePath(_this.dataSource);
-                var initialData = null;
-                if ($("option", _this.jElement).length > 0) {
-                    initialData = new Array();
-                    var extractItemData = function (index, elem) {
-                        var item = new Object();
-                        item[_this.TextKey] = $(elem).text();
-                        item[_this.ValueKey] = $(elem).val();
-                        initialData.push(item);
-                    };
-                    $("option", _this.jElement).each(extractItemData);
-                }
-                _this.jElement.empty();
-                var me = _this;
-                _this.element.onchange = function () { return _this.changeIndex(); };
-                if (initialData !== null) {
-                    _this.bind(initialData);
-                }
-                return _this;
-            }
-            Object.defineProperty(DropDown.prototype, "SelectedIndex", {
-                /** Selected index of the drop down -1 if none */
-                get: function () {
-                    return this.element.selectedIndex;
-                },
-                set: function (val) {
-                    this.element.selectedIndex = val;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(DropDown.prototype, "OnSelectionChanged", {
-                /** The on OnSelection Changed event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
-                get: function () {
-                    return this.onSelectionChanged;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(DropDown.prototype, "Items", {
-                /** gets the items in the drop down*/
-                get: function () {
-                    return this.items;
-                },
-                /** Sets the items on the drop down */
-                set: function (val) {
-                    this.emptyContent();
-                    if (val) {
-                        var len = val.length;
-                        for (var i = 0; i < len; i++) {
-                            var item = val[i];
-                            this.Append(item);
-                        }
-                    }
-                    this.items = val;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(DropDown.prototype, "SelectedItem", {
-                /** gets the selected dropdownitems of the control */
-                get: function () {
-                    return this.items[this.SelectedIndex];
-                },
-                /** sets the selected dropdownitems of the control.  This does change the UI Selection */
-                set: function (val) {
-                    val.element.selected = true;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(DropDown.prototype, "SelectedValue", {
-                /** gets the selected value of the control */
-                get: function () {
-                    if (this.SelectedIndex !== -1)
-                        return this.items[this.SelectedIndex].data;
-                    else
-                        return undefined;
-                },
-                /** sets the list of the selected value of the control.  This does change the UI Selection */
-                set: function (value) {
-                    if (value === undefined) {
-                        this.SelectedIndex = -1;
-                        return;
-                    }
-                    if (this.items !== undefined && this.items !== null) {
-                        var length = this.items.length;
-                        var index = -1;
-                        for (var i = 0; i < length; i++) {
-                            if (this.items[i].data == value) {
-                                index = i;
-                                break;
-                            }
-                        }
-                        if (index != -1)
-                            this.SelectedIndex = index;
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(DropDown.prototype, "DataSource", {
-                /** Gets the data source of the object */
-                get: function () {
-                    return this.dataSource;
-                },
-                /** Sets te data source for the object */
-                set: function (value) {
-                    if (this.dataSource !== undefined && this.dataSource !== null && typeof this.dataSource !== 'string') {
-                        this.dataSource.onDataUpdated.remove(this.bind, this);
-                    }
-                    this.dataSource = value;
-                    if (this.dataSource != null) {
-                        this.dataSource.onDataUpdated.add(this.bind, this);
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-     * Binds the data to the control given the TextKey and ValueKey to map the data
-     * @param data - data to bind to the control
-     */
-            DropDown.prototype.bind = function (data) {
-                this.jElement.empty();
-                for (var i = 0; i < data.length; i++) {
-                    var dat = data[i];
-                    var item;
-                    if (typeof dat == 'string')
-                        item = new UI.DropDownItem(dat, dat);
-                    else {
-                        if (this.ValueKey === 'valueOf')
-                            item = new UI.DropDownItem(dat[this.TextKey], dat);
-                        else
-                            item = new UI.DropDownItem(dat[this.TextKey], dat[this.ValueKey]);
-                    }
-                    this.items.push(item);
-                    item.index = i;
-                    item.jElement.attr('idx', i);
-                    var me = this;
-                    this.Append(item);
-                }
-                this.SelectedIndex = -1;
-            };
-            /**
-     * Gets underlying data to the drop down items if there is any.
-     */
-            DropDown.prototype.getData = function () {
-                return this.items.map(function (d) { return d.data; });
-            };
-            /**
-            * Handeles selection change.  Internal.
-            */
-            DropDown.prototype.changeIndex = function () {
-                if (this.items && this.items.length > 0)
-                    this.onSelectionChanged.fire(this, this.items[this.SelectedIndex]);
-            };
-            return DropDown;
-        }(UI.TSControl));
-        UI.DropDown = DropDown;
-    })(UI = TSF.UI || (TSF.UI = {}));
-})(TSF || (TSF = {}));
-/// <reference path=".\TSControl.ts" />
-var TSF;
-(function (TSF) {
-    var UI;
-    (function (UI) {
-        /**
-             * Drop down item used in the drop down control which contains display and selected data info.
-             */
-        var DropDownItem = (function (_super) {
-            __extends(DropDownItem, _super);
-            function DropDownItem(text, value, element) {
-                var _this = _super.call(this, element) || this;
-                _this.checkEmptyEle('option');
-                if (value !== undefined && value != null)
-                    _this.jElement.val(value.toString());
-                _this.Text = text;
-                _this.data = value;
-                return _this;
-            }
-            return DropDownItem;
-        }(UI.TSControl));
-        UI.DropDownItem = DropDownItem;
-    })(UI = TSF.UI || (TSF.UI = {}));
-})(TSF || (TSF = {}));
-/// <reference path="..\..\TSControl.ts" />
-var TSF;
-(function (TSF) {
-    var UI;
-    (function (UI) {
-        var Grid;
-        (function (Grid) {
-            var Extensions;
-            (function (Extensions) {
-                /**
-                 *  Used by the wundergrid when no custom header method is provided by the column to generate anthe header
-                 */
-                var SortableColumnHeader = (function (_super) {
-                    __extends(SortableColumnHeader, _super);
-                    function SortableColumnHeader() {
-                        var _this = _super.call(this, document.createElement('div')) || this;
-                        _this.OnClick.add(_this.click, _this);
-                        return _this;
-                    }
-                    /** generates the cell */
-                    SortableColumnHeader.prototype.generateHeader = function (column, target) {
-                        var _this = this;
-                        this.column = column;
-                        this.target = target;
-                        var header = new Grid.WunderColumnHeader();
-                        var textEle = new UI.TSControl(document.createElement('span'));
-                        textEle.Text = column.displayText;
-                        header.Append(textEle);
-                        header.Append(this);
-                        this.Style.display = 'inline-block';
-                        this.element.innerHTML = "▵<br/>▿";
-                        this.Style.lineHeight = '13px';
-                        this.Style.fontSize = '1.5em';
-                        this.Style.height = '100%';
-                        this.Style.cssFloat = 'right';
-                        this.Style.cursor = 'pointer';
-                        this.Class = 'wgSorter';
-                        setTimeout(function () {
-                            var paddingTop = parseInt(header.jElement.css('padding-top').replace('px', ''));
-                            var paddingBottom = parseInt(header.jElement.css('padding-bottom').replace('px', ''));
-                            var elePadTop = parseInt(_this.jElement.css('padding-top').replace('px', ''));
-                            var elePadBottom = parseInt(_this.jElement.css('padding-bottom').replace('px', ''));
-                            _this.Style.marginTop = (((header.element.clientHeight - paddingTop - paddingBottom) / 2) - ((_this.element.clientHeight - elePadTop - elePadBottom) / 2)) + 'px';
-                        }, 1);
-                        target.onSortChanged.add(this.sortChanged, this);
-                        return header;
-                    };
-                    SortableColumnHeader.prototype.click = function (sender, args) {
-                        if (this.order === undefined)
-                            this.target.applySorting([new TSF.Data.SortElement(this.column.dataField, TSF.Data.SortDirection.ASC)], true);
-                        else if (this.order === TSF.Data.SortDirection.ASC)
-                            this.target.applySorting([new TSF.Data.SortElement(this.column.dataField, TSF.Data.SortDirection.DESC)], true);
-                        else
-                            this.target.applySorting([], true);
-                        if (window.getSelection) {
-                            if (window.getSelection().empty) {
-                                window.getSelection().empty();
-                            }
-                            else if (window.getSelection().removeAllRanges) {
-                                window.getSelection().removeAllRanges();
-                            }
-                        }
-                        else if (document.selection) {
-                            document.selection.empty();
-                        }
-                    };
-                    SortableColumnHeader.prototype.changeSortingOrder = function (order) {
-                        this.order = order;
-                        if (order === undefined)
-                            this.element.innerHTML = "▵<br/>▿";
-                        else {
-                            if (order === TSF.Data.SortDirection.DESC)
-                                this.element.innerHTML = "▵<br/>▾";
-                            else
-                                this.element.innerHTML = "▴<br/>▿";
-                        }
-                    };
-                    SortableColumnHeader.prototype.sortChanged = function (sorts) {
-                        if (sorts.length < 1)
-                            this.changeSortingOrder();
-                        else if (this.column.dataField === sorts[0].column)
-                            this.changeSortingOrder(sorts[0].sortDirection);
-                        else
-                            this.changeSortingOrder();
-                    };
-                    return SortableColumnHeader;
-                }(UI.TSControl));
-                Extensions.SortableColumnHeader = SortableColumnHeader;
-            })(Extensions = Grid.Extensions || (Grid.Extensions = {}));
-        })(Grid = UI.Grid || (UI.Grid = {}));
-    })(UI = TSF.UI || (TSF.UI = {}));
-})(TSF || (TSF = {}));
-/// <reference path="..\TSControl.ts" />
-var TSF;
-(function (TSF) {
-    var UI;
-    (function (UI) {
-        var Grid;
-        (function (Grid) {
-            /**
-             * Used to resize grid columns in the wunder grid
-             */
-            var Resizer = (function (_super) {
-                __extends(Resizer, _super);
-                /**
-                 * Used to resize grid columns in the wunder grid
-                 * @param element - element to use as the resizer
-                 * @param grid - the grid being resized
-                 * @param cell - header cell to be resized
-                 * @param width
-                 */
-                function Resizer(element, grid, cell, left, width, index) {
-                    var _this = _super.call(this, element) || this;
-                    _this.index = index;
-                    _this.grid = grid;
-                    _this.headerCell = cell;
-                    _this.width = width;
-                    var me = _this;
-                    var style = _this.Style;
-                    style.cursor = 'col-resize';
-                    _this.left = left;
-                    //if (float === 'left')
-                    //    style.margin = '0px 0px 0px -2px';
-                    //else
-                    //    style.margin = '0px -2px 0px 0px';
-                    _this.Style.position = 'absolute';
-                    cell.Style.position = 'relative';
-                    _this.rePosition();
-                    _this.Style.top = '0px';
-                    style.width = width + 'px';
-                    style.height = '100%';
-                    style.display = 'inline-block';
-                    //style.cssFloat = float;
-                    _this.jElement.mouseup(function () { return _this.grid.context.selectedResizer = undefined; });
-                    _this.jElement.mousedown(function (event) {
-                        me.mouseDown(event);
-                    });
-                    _this.OnDoubleClick.add(_this.doubleClick, _this);
-                    return _this;
-                }
-                Resizer.prototype.rePosition = function () {
-                    var _this = this;
-                    var padding = 0;
-                    setTimeout(function () {
-                        if (_this.headerCell.element.style.paddingRight)
-                            padding = parseInt(_this.headerCell.element.style.paddingRight);
-                        if (!_this.left)
-                            _this.Style.left = (_this.headerCell.element.clientWidth - (_this.width - 1) - padding) + 'px';
-                        else
-                            _this.Style.left = '-1px';
-                    }, 18);
-                };
-                /**
-                 *  handles a double click on a column sizer
-                 * @param sender - sizer
-                 * @param args - none
-                 */
-                Resizer.prototype.doubleClick = function (sender, args) {
-                    var maxWidth = 0;
-                    var nodes = this.headerCell.element.childNodes;
-                    var len = nodes.length;
-                    var backupStyle = this.headerCell.Style.whiteSpace;
-                    if (!backupStyle)
-                        backupStyle = 'normal';
-                    this.headerCell.Style.whiteSpace = 'pre';
-                    var headWidth = parseInt(this.headerCell.Style.width.replace('px', ''));
-                    var cellPadding = parseInt(this.headerCell.jElement.css('padding-left').replace('px', '')) + parseInt(this.headerCell.jElement.css('padding-right').replace('px', ''));
-                    for (var i = 0; i < len; i++) {
-                        maxWidth += nodes[i].offsetWidth;
-                    }
-                    maxWidth += cellPadding;
-                    this.headerCell.Style.whiteSpace = backupStyle;
-                    len = this.grid.Rows.length;
-                    for (var i = 0; i < len; i++) {
-                        var cell = this.grid.Rows[i].cells[this.index];
-                        var nodes_1 = cell.element.childNodes;
-                        var cellLen = cell.element.childNodes.length;
-                        var width = 0;
-                        var backupStyle_1 = cell.Style.whiteSpace;
-                        if (!backupStyle_1)
-                            backupStyle_1 = 'normal';
-                        cell.Style.whiteSpace = 'pre';
-                        for (var j = 0; j < cellLen; j++) {
-                            width += nodes_1[j].offsetWidth;
-                        }
-                        width += cellPadding;
-                        cell.Style.whiteSpace = backupStyle_1;
-                        if (width > maxWidth)
-                            maxWidth = width;
-                    }
-                    this.headerCell.Style.width = maxWidth + 'px';
-                    var gridWidth = parseInt(this.grid.Style.width.replace('px', ''));
-                    this.grid.Style.width = (gridWidth + (maxWidth - headWidth)) + 'px';
-                    this.rePosition();
-                    if (this.prevResizer)
-                        this.prevResizer.rePosition();
-                };
-                /**
-                 * handles mouse down on the control to start the resizing process
-                 * @param event
-                 */
-                Resizer.prototype.mouseDown = function (event) {
-                    this.grid.context.selectedResizer = this;
-                    this.currentColumnWidth = parseInt(this.headerCell.Style.width.replace('px', ''));
-                    this.currentGridWidth = parseInt(this.grid.Style.width.replace('px', ''));
-                    this.currentMousePageX = event.pageX;
-                    this.grid.context.selectedColumn = this;
-                    this.currentClientWidth = this.headerCell.element.clientWidth;
-                    if (this.left && this.prevResizer)
-                        this.currentResizerLeft = parseFloat(this.prevResizer.Style.left.replace('px', ''));
-                    else
-                        this.currentResizerLeft = parseFloat(this.Style.left.replace('px', ''));
-                };
-                /**
-                 * Handles mouse move events while a column is being resized
-                 * @param event
-                 */
-                Resizer.prototype.onMouseMove = function (event) {
-                    var width = this.width;
-                    var diff = event.pageX - this.currentMousePageX;
-                    var gridStyle = this.grid.Style;
-                    var cellStyle = this.headerCell.Style;
-                    var backup = cellStyle.width;
-                    var clientWidth = this.headerCell.element.clientWidth;
-                    //let gridWidth: any = gridStyle.width.replace('px', '');
-                    cellStyle.width = (this.currentColumnWidth + diff) + 'px';
-                    if (clientWidth === this.headerCell.element.clientWidth)
-                        cellStyle.width = backup;
-                    else {
-                        gridStyle.width = (this.currentGridWidth + diff) + 'px';
-                        if (this.left) {
-                            if (this.prevResizer)
-                                this.prevResizer.Style.left = (this.currentResizerLeft + this.headerCell.element.clientWidth - this.currentClientWidth) + 'px';
-                        }
-                        else
-                            this.Style.left = (this.currentResizerLeft + this.headerCell.element.clientWidth - this.currentClientWidth) + 'px';
-                    }
-                    if (window.getSelection) {
-                        if (window.getSelection().empty) {
-                            window.getSelection().empty();
-                        }
-                        else if (window.getSelection().removeAllRanges) {
-                            window.getSelection().removeAllRanges();
-                        }
-                    }
-                    else if (document.selection) {
-                        document.selection.empty();
-                    }
-                };
-                return Resizer;
-            }(UI.TSControl));
-            Grid.Resizer = Resizer;
-        })(Grid = UI.Grid || (UI.Grid = {}));
-    })(UI = TSF.UI || (TSF.UI = {}));
-})(TSF || (TSF = {}));
-/// <reference path=".\TSControl.ts" />
-var TSF;
-(function (TSF) {
-    var UI;
-    (function (UI) {
-        /**
-         *  An image control for displaying images on a page
-         */
-        var Image = (function (_super) {
-            __extends(Image, _super);
-            /**
-             * A Image control that can be used in the html markup or just constructed plainly in javacsript
-             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
-             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
-             */
-            function Image(ele, logicalParent) {
-                var _this = _super.call(this, ele, logicalParent) || this;
-                if (ele === undefined) {
-                    _this.checkEmptyEle('img');
-                }
-                return _this;
-            }
-            Object.defineProperty(Image.prototype, "Src", {
-                get: function () {
-                    return this.jElement.attr("src");
-                },
-                /** url source for the image */
-                set: function (value) {
-                    if (value === null || value === undefined)
-                        value = "";
-                    this.jElement.attr("src", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return Image;
-        }(UI.TSControl));
-        UI.Image = Image;
-    })(UI = TSF.UI || (TSF.UI = {}));
-})(TSF || (TSF = {}));
-/// <reference path=".\TSControl.ts" />
-var TSF;
-(function (TSF) {
-    var UI;
-    (function (UI) {
-        /**
-      * Drop down control
-      */
-        var MultiSelect = (function (_super) {
-            __extends(MultiSelect, _super);
-            /**
-             * Drop down control
-             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
-             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
-             */
-            function MultiSelect(ele, logicalParent) {
-                var _this = _super.call(this, ele, logicalParent) || this;
-                /** list of selected indicies */
-                _this.selectedIndicies = [];
-                /** Event fired when the selected item list has changed */
-                _this.onSelectionChanged = new TSF.Events.GenericEvent();
-                /** internal use only for not firing extra events */
-                _this.updatingSelected = false;
-                /** list of drop down items in the control */
-                _this.items = [];
-                /** the data source for the control */
-                _this.dataSource = undefined;
-                if (_this.Attributes['multiple'] === undefined)
-                    _this.element.setAttribute('multiple', '');
-                _this.checkEmptyEle('select');
-                _this.loadConfiguration('dataSource', 'TextKey', 'ValueKey');
-                var onchanged = _this.jElement.attr('onchange');
-                if (onchanged !== null && onchanged !== undefined) {
-                    _this.OnSelectionChanged.add(function (sender, args) { eval(onchanged); }, (logicalParent === undefined) ? _this : logicalParent);
-                }
-                if (_this.TextKey === undefined) {
-                    _this.TextKey = "text";
-                }
-                if (_this.ValueKey === undefined) {
-                    _this.ValueKey = "value";
-                }
-                if (_this.dataSource)
-                    _this.DataSource = _this.getRelativePath(_this.dataSource);
-                var initialData = null;
-                var i = 0;
-                if ($("option", _this.jElement).length > 0) {
-                    initialData = new Array();
-                    var extractItemData = function (index, elem) {
-                        var ele = $(elem);
-                        var item = new UI.DropDownItem(ele.text(), ele.val(), elem);
-                        _this.items.push(item);
-                        if (elem.selected)
-                            _this.selectedIndicies.push(i);
-                        item.index = i;
-                        item.jElement.attr('idx', i);
-                        i++;
-                    };
-                    $("option", _this.jElement).each(extractItemData);
-                }
-                var me = _this;
-                _this.element.onchange = function () { return _this.changeSelection(); };
-                return _this;
-            }
-            Object.defineProperty(MultiSelect.prototype, "OnSelectionChanged", {
-                /** The on OnSelection Changed event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
-                get: function () {
-                    return this.onSelectionChanged;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(MultiSelect.prototype, "SelectedValues", {
-                /** gets the list of selected values of the control */
-                get: function () {
-                    var items = this.SelectedItems;
-                    return items.map(function (x) { return x.data; });
-                },
-                /** sets the list of selected values of the control.  This does change the UI Selection */
-                set: function (value) {
-                    this.updatingSelected = true;
-                    this.selectedIndicies = [];
-                    if (value !== undefined && this.items !== undefined && this.items !== null) {
-                        var length = this.items.length;
-                        for (var i = 0; i < length; i++) {
-                            var item = this.items[i];
-                            var len = value.length;
-                            var found = false;
-                            for (var j = 0; j < len; j++) {
-                                if (item.data == value[j]) {
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (found) {
-                                item.element.selected = true;
-                                this.selectedIndicies.push(i);
-                            }
-                            else
-                                item.element.selected = false;
-                        }
-                    }
-                    this.updatingSelected = false;
-                    this.onSelectionChanged.fire(this, this.SelectedItems);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(MultiSelect.prototype, "Items", {
-                /** gets the items in the drop down*/
-                get: function () {
-                    return this.items;
-                },
-                /** Sets the items on the drop down */
-                set: function (val) {
-                    this.selectedIndicies = [];
-                    this.emptyContent();
-                    if (val) {
-                        var len = val.length;
-                        for (var i = 0; i < len; i++) {
-                            var item = val[i];
-                            this.Append(item);
-                            if (item.element.selected)
-                                this.selectedIndicies.push(i);
-                        }
-                    }
-                    this.items = val;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(MultiSelect.prototype, "SelectedItems", {
-                /** gets the selected dropdownitems of the control */
-                get: function () {
-                    var _this = this;
-                    return this.selectedIndicies.map(function (x) { return _this.items[x]; });
-                },
-                /** sets the selected dropdownitems of the control.  This does change the UI Selection */
-                set: function (val) {
-                    this.updatingSelected = true;
-                    this.selectedIndicies = [];
-                    this.element.selectedIndex = -1;
-                    if (val) {
-                        var length = val.length;
-                        for (var i = 0; i < length; i++) {
-                            var item = val[i];
-                            item.element.selected = true;
-                            this.selectedIndicies.push(item.element.index);
-                        }
-                    }
-                    this.selectedIndicies.sort();
-                    this.updatingSelected = false;
-                    this.onSelectionChanged.fire(this, val);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(MultiSelect.prototype, "DataSource", {
-                /** Gets the data source of the object */
-                get: function () {
-                    return this.dataSource;
-                },
-                /** Sets te data source for the object */
-                set: function (value) {
-                    if (this.dataSource !== undefined && this.dataSource !== null && typeof this.dataSource !== 'string') {
-                        this.dataSource.onDataUpdated.remove(this.bind, this);
-                    }
-                    this.dataSource = value;
-                    if (this.dataSource != null) {
-                        this.dataSource.onDataUpdated.add(this.bind, this);
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Binds the data to the control given the TextKey and ValueKey to map the data
-             * @param data - data to bind to the control
-             */
-            MultiSelect.prototype.bind = function (data) {
-                this.items = [];
-                this.jElement.empty();
-                for (var i = 0; i < data.length; i++) {
-                    var dat = data[i];
-                    var item;
-                    if (typeof dat == 'string')
-                        item = new UI.DropDownItem(dat, dat);
-                    else {
-                        if (this.ValueKey === 'valueOf')
-                            item = new UI.DropDownItem(dat[this.TextKey], dat);
-                        else
-                            item = new UI.DropDownItem(dat[this.TextKey], dat[this.ValueKey]);
-                    }
-                    this.items.push(item);
-                    item.index = i;
-                    item.jElement.attr('idx', i);
-                    var me = this;
-                    this.Append(item);
-                }
-                this.element.selectedIndex = -1;
-            };
-            /**
-             * Gets underlying data to the drop down items if there is any.
-             */
-            MultiSelect.prototype.getData = function () {
-                return this.items.map(function (d) { return d.data; });
-            };
-            /**
-             * Handeles selection change.  Internal.
-             */
-            MultiSelect.prototype.changeSelection = function () {
-                if (!this.updatingSelected) {
-                    this.selectedIndicies = this.getSelectedIndicies();
-                    this.OnSelectionChanged.fire(this, this.SelectedItems);
-                }
-            };
-            /**
-             * gets the selected indexes internal
-             */
-            MultiSelect.prototype.getSelectedIndicies = function () {
-                if (this.element.selectedOptions === undefined)
-                    return this.getSelectedDropDownsIE();
-                var selected = this.element.selectedOptions;
-                var len = selected.length;
-                var selectedIndicies = [];
-                for (var i = 0; i < len; i++) {
-                    selectedIndicies.push(selected[i].index);
-                }
-                return selectedIndicies;
-            };
-            /**
-             * handles gets indexes in a different way for ie because it doesn't support selectedOptions
-             */
-            MultiSelect.prototype.getSelectedDropDownsIE = function () {
-                var len = this.items.length;
-                var indicies = [];
-                for (var i = 0; i < len; i++) {
-                    if (this.items[0].element.selected)
-                        indicies.push(i);
-                }
-                return indicies;
-            };
-            return MultiSelect;
-        }(UI.TSControl));
-        UI.MultiSelect = MultiSelect;
-    })(UI = TSF.UI || (TSF.UI = {}));
-})(TSF || (TSF = {}));
-/// <reference path=".\TSControl.ts" />
-var TSF;
-(function (TSF) {
-    var UI;
-    (function (UI) {
-        /**
-         * Radio button control
-         */
-        var RadioButton = (function (_super) {
-            __extends(RadioButton, _super);
-            /**
-             * A RadioButton control that can be used in the html markup or just constructed plainly in javacsript
-             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
-             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
-             */
-            function RadioButton(ele, logicalParent) {
-                var _this = _super.call(this, ele, logicalParent) || this;
-                if (ele === undefined) {
-                    _this.checkEmptyEle('input');
-                }
-                _this.element.setAttribute('type', 'radio');
-                _this.element.TSControl = _this;
-                return _this;
-            }
-            Object.defineProperty(RadioButton.prototype, "Value", {
-                get: function () {
-                    if (this.value)
-                        return this.value;
-                    else
-                        return this.element.value;
-                },
-                /** Value for the radio button.  If set this way it can be an object as well as a string */
-                set: function (val) {
-                    this.value = val;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(RadioButton.prototype, "OnSelectionChanged", {
-                /** The on change event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
-                get: function () {
-                    var _this = this;
-                    if (!this.onSelectionChanged) {
-                        this.onSelectionChanged = new TSF.Events.UIEvent();
-                        this.element.onchange = function () { return _this.onSelectionChanged.fire(_this, _this.args); };
-                    }
-                    return this.onSelectionChanged;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(RadioButton.prototype, "SelectedValue", {
-                /** Gets or Sets the selected value for the group of radio buttons */
-                get: function () {
-                    var selectedItem = this.SelectedItem;
-                    if (selectedItem === undefined)
-                        return undefined;
-                    if (selectedItem.Value !== undefined)
-                        return selectedItem.Value;
-                },
-                /** Gets the selected value of the radio button group */
-                set: function (val) {
-                    var ctrls = document.getElementsByName(this.Name);
-                    var len = ctrls.length;
-                    for (var i = 0; i < len; i++) {
-                        var ctrl = ctrls[i];
-                        if (ctrl.TSControl !== undefined) {
-                            var tsCtrl = ctrl.TSControl;
-                            if (tsCtrl.Value === val) {
-                                tsCtrl.Checked = true;
-                            }
-                        }
-                        else if (ctrl.value === val) {
-                            ctrl.checked = true;
-                        }
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(RadioButton.prototype, "Checked", {
-                /**returns true if the control is selected */
-                get: function () {
-                    return this.element.checked;
-                },
-                /**selects the specific control */
-                set: function (val) {
-                    this.element.checked = val;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(RadioButton.prototype, "Name", {
-                /** name (group) of the radio button */
-                get: function () {
-                    return this.element.name;
-                },
-                set: function (val) {
-                    this.element.name = val;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(RadioButton.prototype, "SelectedItem", {
-                /** returns the ts control if one exists for the selected item otherwise just the html element */
-                get: function () {
-                    var ctrls = document.getElementsByName(this.Name);
-                    var len = ctrls.length;
-                    for (var i = 0; i < len; i++) {
-                        var ctrl = ctrls[i];
-                        if (ctrl.checked) {
-                            if (ctrl.TSControl !== undefined)
-                                return ctrl.TSControl;
-                            else
-                                return ctrl;
-                        }
-                    }
-                    return undefined;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return RadioButton;
-        }(UI.TSControl));
-        UI.RadioButton = RadioButton;
-    })(UI = TSF.UI || (TSF.UI = {}));
-})(TSF || (TSF = {}));
-var TSF;
-(function (TSF) {
-    var Utilities;
-    (function (Utilities) {
-        /*
-         * Date Format 1.2.3
-         * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
-         * MIT license
-         *
-         * Includes enhancements by Scott Trenda <scott.trenda.net>
-         * and Kris Kowal <cixar.com/~kris.kowal/>
-         *
-         * Accepts a date, a mask, or a date and a mask.
-         * Returns a formatted version of the given date.
-         * The date defaults to the current date/time.
-         * The mask defaults to dateFormat.masks.default.
-         */
-        var DateFormatter = (function () {
-            function DateFormatter() {
-            }
-            DateFormatter.pad = function (val, len) {
-                val = String(val);
-                len = len || 2;
-                while (val.length < len)
-                    val = "0" + val;
-                return val;
-            };
-            ;
-            // Regexes and supporting functions are cached through closure
-            DateFormatter.formatDate = function (date, format, utc) {
-                // You can't provide utc if you skip other args (use the "UTC:" mask prefix)
-                if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
-                    format = date;
-                    date = undefined;
-                }
-                // Passing date through Date applies Date.parse, if necessary
-                date = date ? new Date(date) : new Date;
-                if (isNaN(date))
-                    throw SyntaxError("invalid date");
-                format = String(this.masks[format] || format || this.masks["default"]);
-                // Allow setting the utc argument via the mask
-                if (format.slice(0, 4) == "UTC:") {
-                    format = format.slice(4);
-                    utc = true;
-                }
-                var _ = utc ? "getUTC" : "get", d = date[_ + "Date"](), D = date[_ + "Day"](), m = date[_ + "Minutes"](), y = date[_ + "FullYear"](), H = date[_ + "Hours"](), M = date[_ + "Month"](), s = date[_ + "Seconds"](), L = date[_ + "Milliseconds"](), o = utc ? 0 : date.getTimezoneOffset(), flags = {
-                    d: d,
-                    dd: this.pad(d),
-                    ddd: this.i18n.dayNames[D],
-                    dddd: this.i18n.dayNames[D + 7],
-                    M: M + 1,
-                    MM: this.pad(M + 1),
-                    MMM: this.i18n.monthNames[M],
-                    MMMM: this.i18n.monthNames[M + 12],
-                    yy: String(y).slice(2),
-                    yyyy: y,
-                    h: H % 12 || 12,
-                    hh: this.pad(H % 12 || 12),
-                    H: H,
-                    HH: this.pad(H),
-                    m: m,
-                    mm: this.pad(m),
-                    s: s,
-                    ss: this.pad(s),
-                    l: this.pad(L, 3),
-                    L: this.pad(L > 99 ? Math.round(L / 10) : L),
-                    t: H < 12 ? "a" : "p",
-                    tt: H < 12 ? "am" : "pm",
-                    T: H < 12 ? "A" : "P",
-                    TT: H < 12 ? "AM" : "PM",
-                    Z: utc ? "UTC" : (String(date).match(this.timezone) || [""]).pop().replace(this.timezoneClip, ""),
-                    o: (o > 0 ? "-" : "+") + this.pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-                    S: ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
-                };
-                return format.replace(this.token, function ($0) {
-                    return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
-                });
-            };
-            return DateFormatter;
-        }());
-        DateFormatter.token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
-        DateFormatter.timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
-        DateFormatter.timezoneClip = /[^-+\dA-Z]/g;
-        // Some common format strings
-        DateFormatter.masks = {
-            "default": "ddd mmm dd yyyy HH:MM:ss",
-            shortDate: "m/d/yy",
-            mediumDate: "mmm d, yyyy",
-            longDate: "mmmm d, yyyy",
-            fullDate: "dddd, mmmm d, yyyy",
-            shortTime: "h:MM TT",
-            mediumTime: "h:MM:ss TT",
-            longTime: "h:MM:ss TT Z",
-            isoDate: "yyyy-mm-dd",
-            isoTime: "HH:MM:ss",
-            isoDateTime: "yyyy-mm-dd'T'HH:MM:ss",
-            isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-        };
-        // Internationalization strings
-        DateFormatter.i18n = {
-            dayNames: [
-                "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
-                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-            ],
-            monthNames: [
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-                "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-            ]
-        };
-        Utilities.DateFormatter = DateFormatter;
-    })(Utilities = TSF.Utilities || (TSF.Utilities = {}));
-})(TSF || (TSF = {}));
-/// <reference path="..\TSF\UI\LogicalControl.ts" />
-var TSF;
-(function (TSF) {
-    var TestController = (function (_super) {
-        __extends(TestController, _super);
-        function TestController() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.message = "here is a message to see if the context works";
-            return _this;
-        }
-        TestController.prototype.methodToFire = function (message) {
-            alert(message);
-        };
-        TestController.prototype.TSInit = function () {
-            //this.grid.AutoGenerateColumns = true;
-            this.grid.Columns = ['col1', 'col2', new TSF.UI.Grid.WunderColumn('col3', 'col3', TSF.UI.ColumnType.Boolean), new TSF.UI.Grid.WunderColumn('timestamp', 'Time Stamp', TSF.UI.ColumnType.DateTime)];
-            //(<TSF.UI.Grid.WunderColumn>this.grid.Columns[0]).customHeader = new UI.Grid.Extensions.SortableColumnHeader();
-            //this.dsTestTable.onDataUpdated.add(this.test, this);
-            this.grid.applySorting([new TSF.Data.SortElement('col1', TSF.Data.SortDirection.DESC)], false);
-            this.dsTestTable.refresh();
-            //setTimeout(() => this.grid.changePage(2), 5000);
-            var condition = new TSF.Data.Condition('col1', 5, TSF.Data.CriteriaComparator.Equal);
-            radOrange.Value = { 'color': 'red' };
-            //setTimeout(() => this.grid.applyFilter(condition), 3000);
-            //setTimeout(() => this.grid.Editing = true,10000);
-        };
-        return TestController;
-    }(TSF.UI.LogicalControl));
-    TSF.TestController = TestController;
-})(TSF || (TSF = {}));
-var TSF;
-(function (TSF) {
-    var Base;
-    (function (Base) {
-        /**
-         * Standard exception for error handeling
-         */
-        var Exception = (function () {
-            /**
-             * Exception used for throwing
-             * @param message The message for the exception
-             */
-            function Exception(ExceptionMessage) {
-                this.ExceptionMessage = ExceptionMessage;
-            }
-            return Exception;
-        }());
-        Base.Exception = Exception;
-    })(Base = TSF.Base || (TSF.Base = {}));
-})(TSF || (TSF = {}));
-/// <reference path="..\Base\Exception.ts" />
-var TSF;
-(function (TSF) {
-    var Events;
-    (function (Events) {
-        /**
-         * Generic event handeler
-         */
-        var EventHandler = (function () {
-            function EventHandler() {
-                /** array of subscribers */
-                this.events = [];
-            }
-            /**
-             * Adds a listener to the event object
-             * @param method - method to call when the event is triggered
-             * @param callBackObject - object to be used as the this when firing the event
-             */
-            EventHandler.prototype.add = function (method, callBackObject) {
-                this.events.push(new TSF.DS.Tuple(method, callBackObject));
-            };
-            /**
-             * Removes a subscription from the event object
-             * @param method - method to unsubscribe
-             * @param callBackObject - object that was listening that wants to unsubscribe
-             */
-            EventHandler.prototype.remove = function (method, callBackObject) {
-                var count = this.events.length;
-                this.events = this.events.filter(function (x) { return x.Item2 !== callBackObject && x.Item1 !== method; });
-                if (count === this.events.length)
-                    throw new TSF.Base.Exception("Event not found to remove");
-            };
-            /**
-             * Clears all events from the event handeler
-             */
-            EventHandler.prototype.clearEvents = function () {
-                this.events = [];
-            };
-            /**
-             * Fires the event
-             * @param args - the arguments to pass to the listening method.
-             */
-            EventHandler.prototype.fire = function () {
-                var args = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    args[_i] = arguments[_i];
-                }
-                for (var i = 0; i < this.events.length; i++) {
-                    this.events[i].Item1.apply(this.events[i].Item2, args);
-                }
-            };
-            return EventHandler;
-        }());
-        Events.EventHandler = EventHandler;
-    })(Events = TSF.Events || (TSF.Events = {}));
-})(TSF || (TSF = {}));
 /// <reference path=".\EventHandler.ts" />
 var TSF;
+/// <reference path=".\EventHandler.ts" />
 (function (TSF) {
     var Events;
     (function (Events) {
         /**
-         * Event handeler with no input arguments
+         * Basic event with one argument that can be dynamically typed.
          */
-        var EmptyEvent = (function (_super) {
-            __extends(EmptyEvent, _super);
-            function EmptyEvent() {
+        var ValueEvent = /** @class */ (function (_super) {
+            __extends(ValueEvent, _super);
+            function ValueEvent() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            EmptyEvent.prototype.fire = function () {
-                _super.prototype.fire.call(this);
+            /**
+             * Fires the event
+             * @param value - the value to be passed into the listening methods.
+             */
+            ValueEvent.prototype.fire = function (value) {
+                _super.prototype.fire.call(this, value);
             };
-            return EmptyEvent;
+            return ValueEvent;
         }(Events.EventHandler));
-        Events.EmptyEvent = EmptyEvent;
+        Events.ValueEvent = ValueEvent;
     })(Events = TSF.Events || (TSF.Events = {}));
 })(TSF || (TSF = {}));
 /// <reference path="..\Base\Exception.ts" />
+/// <reference path="..\Events\ValueEvent.ts" />
 var TSF;
-(function (TSF) {
-    var Remote;
-    (function (Remote) {
-        /**
-         *  Standard exception with additional detail from a remote call
-         */
-        var RemoteException = (function (_super) {
-            __extends(RemoteException, _super);
-            function RemoteException(message) {
-                return _super.call(this, message) || this;
-            }
-            return RemoteException;
-        }(TSF.Base.Exception));
-        Remote.RemoteException = RemoteException;
-    })(Remote = TSF.Remote || (TSF.Remote = {}));
-})(TSF || (TSF = {}));
-/// <reference path="..\..\typings\jquery\jquery.d.ts" />
-/// <reference path="..\Events\EmptyEvent.ts" />
 /// <reference path="..\Base\Exception.ts" />
-/// <reference path=".\RemoteException.ts" />
-var TSF;
+/// <reference path="..\Events\ValueEvent.ts" />
 (function (TSF) {
-    var Remote;
-    (function (Remote) {
-        /** request type for remote calls */
-        var RequestType;
-        (function (RequestType) {
-            RequestType[RequestType["POST"] = 0] = "POST";
-            RequestType[RequestType["GET"] = 1] = "GET";
-            RequestType[RequestType["PUT"] = 2] = "PUT";
-            RequestType[RequestType["DELETE"] = 3] = "DELETE";
-            RequestType[RequestType["TRACE"] = 4] = "TRACE";
-            RequestType[RequestType["CONNECT"] = 5] = "CONNECT";
-        })(RequestType = Remote.RequestType || (Remote.RequestType = {}));
+    var Data;
+    (function (Data) {
+        var Exception = TSF.Base.Exception;
         /**
-         * Used to make remote calls a little bit easier by providing a fluent style remote call as well as an inline method.
-         * This provides a prototype so you know which parameters are expected.  It also parses out the exception from the remote server if one is sent.
+         * Class that holds logic for making objects observable.
          */
-        var RemoteCall = (function () {
-            /**
-             * Creates a command to send to the server using fluent style.
-             * @param url The url to request
-             * @param data The data to send to the server
-             */
-            function RemoteCall(url, data) {
-                /** The type of request to make (POST, GET, PUT, DELETE, TRACE, CONNECT) */
-                this.requestType = RequestType.POST;
-                /** Content type of the request (example: application/json)*/
-                this.contentType = "application/json";
-                /** Datatype of the call.  */
-                this.dataType = undefined;
-                /** Header information to send to the server.  Each member and value of the object becomes a header element and its value*/
-                this.reqHeaders = {};
-                /** Denotes that start and end events should consider this remote call when determining when to fire */
-                this.fireEvents = false;
-                this.url = url;
-                this.data = data;
+        var Observer = /** @class */ (function () {
+            function Observer() {
             }
             /**
-             * Sets advanced options for the remote command
-             * @param requestType The type of request to make (POST, GET, PUT, DELETE, TRACE, CONNECT)
-             * @param fireEvents Denotes that start and end events should consider this remote call when determining when to fire
-             * @param contentType Content type of the request (example: application/json)
-             * @param dataType Datatype of the call.
+             * Alerts other objects listening for changes on this object
+             * @param object - the object to fire the events for
+             * @param attribute - the attribute to fire the event for (optional.  Will fire on change of object if not provided)
              */
-            RemoteCall.prototype.advancedOptions = function (requestType, fireEvents, contentType, dataType) {
-                if (requestType !== undefined)
-                    this.requestType = requestType;
-                if (contentType !== undefined)
-                    this.contentType = contentType;
-                if (fireEvents !== undefined)
-                    this.fireEvents = fireEvents;
-                this.dataType = dataType;
-                return this;
+            Observer.$alertObservers = function (object, attribute) {
+                if (attribute) {
+                    var event = object.$events[attribute];
+                    if (event)
+                        event.fire(object);
+                    object.$objectChangeEvent.fire(object);
+                }
+                else
+                    object.$objectChangeEvent.fire(object);
             };
             /**
-             * Adds header information to the remote call
-             * @param headers - an object whose attributes will be used as headers
+             * Defines the getters and setters that trigger events when their values change
+             * @param object - the object to define the event for
+             * @param att - the attribute to define the event for
+             * @param newName - the name to use for the value of the attribute
              */
-            RemoteCall.prototype.headers = function (headers) {
-                this.reqHeaders = headers;
-                return this;
-            };
-            /**
-             * Calls a remote method and returns a promise that can be used with async await.
-             */
-            RemoteCall.prototype.call = function () {
-                return __awaiter(this, void 0, void 0, function () {
-                    var _this = this;
-                    return __generator(this, function (_a) {
-                        return [2 /*return*/, new Promise(function (resolve, reject) {
-                                $.ajax({
-                                    data: JSON.stringify(_this.data),
-                                    url: _this.url,
-                                    type: RequestType[_this.requestType],
-                                    contentType: _this.contentType,
-                                    dataType: _this.dataType,
-                                    async: true,
-                                    beforeSend: function (request) {
-                                        if (_this.reqHeaders !== undefined && _this.reqHeaders !== null) {
-                                            for (var key in _this.reqHeaders) {
-                                                request.setRequestHeader(key, _this.reqHeaders[key]);
-                                            }
-                                        }
-                                    },
-                                }).done(function (data) {
-                                    if (_this.fireEvents) {
-                                        Remote.RemoteCall.currentCallCount--;
-                                        if (Remote.RemoteCall.currentCallCount === 0)
-                                            Remote.RemoteCall.OnStop.fire();
-                                    }
-                                    resolve(data);
-                                }).fail(function (jqXHR, textStatus, errorThrown) {
-                                    if (_this.fireEvents) {
-                                        Remote.RemoteCall.currentCallCount--;
-                                        if (Remote.RemoteCall.currentCallCount === 0)
-                                            Remote.RemoteCall.OnStop.fire();
-                                    }
-                                    reject(Remote.RemoteCall.constructException(jqXHR, textStatus, errorThrown));
-                                });
-                                if (_this.fireEvents) {
-                                    if (Remote.RemoteCall.currentCallCount === 0)
-                                        Remote.RemoteCall.OnStart.fire();
-                                    Remote.RemoteCall.currentCallCount++;
-                                }
-                            })];
-                    });
+            Observer.$defineEvent = function (object, att, newName) {
+                var me = object;
+                Object.defineProperty(object, att, {
+                    get: function () { return this[newName]; },
+                    set: function (value) { var oldVal = me[newName]; me[newName] = value; if (oldVal !== value) {
+                        me.$dirty = true;
+                        Observer.$alertObservers(me, att);
+                    } }
                 });
+                object.$events[att] = new TSF.Events.ValueEvent();
             };
             /**
-             * And inline remote call that can be called statically
-             * @param url - The url to make the remote call to
-             * @param data - The data to use as input
-             * @param requestType - (optional) request type such as POST,GET etc
-             * @param fireEvents - Option to fire start and end events to the remote call.  Usually used to dispalying loading signs
-             * @param reqHeaders - Additional headers to add to request
-             * @param contentType - content type default is application/json
-             * @param dataType - the data type of the call.
+             * Allows setting of a value without triggering an event
+             * @param obj - object to set the value for
+             * @param attr - the attribute to set
+             * @param val - the value to assign to the attribute
              */
-            RemoteCall.callInline = function (url, data, requestType, fireEvents, reqHeaders, contentType, dataType) {
-                var _this = this;
-                if (requestType === void 0) { requestType = RequestType.POST; }
-                if (fireEvents === void 0) { fireEvents = false; }
-                if (contentType === void 0) { contentType = "application/json"; }
-                return new Promise(function (resolve, reject) {
-                    $.ajax({
-                        data: JSON.stringify(data),
-                        url: url,
-                        type: RequestType[requestType],
-                        contentType: contentType,
-                        dataType: dataType,
-                        async: true,
-                        beforeSend: function (request) {
-                            if (reqHeaders !== undefined && reqHeaders !== null) {
-                                for (var key in reqHeaders) {
-                                    request.setRequestHeader(key, reqHeaders[key]);
+            Observer.$setValueNoEvent = function (obj, attr, val) {
+                obj['#' + attr] = val;
+            };
+            /**
+             * observes a specific attribute of an object and makes the object obserable if it isn't already
+             * @param object - object to observe
+             * @param callBackObject - the object listening for the event
+             * @param method - the method to fire
+             * @param attribute - the attribute to observe
+             */
+            Observer.$observe = function (object, callBackObject, method, attribute) {
+                if (callBackObject && method) {
+                    if (object.$regEvents === undefined) {
+                        object.$events = {};
+                        object.$objectChangeEvent = new TSF.Events.ValueEvent();
+                        object.$regEvents = false;
+                        object.$dirty = false;
+                    }
+                    if (!object.$regEvents) {
+                        object.$regEvents = true;
+                        for (var att in object) {
+                            if (Observer.$exclusions[att] === undefined) {
+                                var newName = '#' + att;
+                                var val = object[att];
+                                if (typeof (val) !== 'function') {
+                                    object[newName] = val;
+                                    delete object[att];
+                                    Observer.$defineEvent(object, att, newName);
+                                    object.$events[att] = new TSF.Events.ValueEvent();
                                 }
                             }
-                        },
-                    }).done(function (data) {
-                        if (fireEvents) {
-                            Remote.RemoteCall.currentCallCount--;
-                            if (Remote.RemoteCall.currentCallCount === 0)
-                                Remote.RemoteCall.OnStop.fire();
                         }
-                        resolve(data);
-                    }).fail(function (jqXHR, textStatus, errorThrown) {
-                        if (fireEvents) {
-                            Remote.RemoteCall.currentCallCount--;
-                            if (Remote.RemoteCall.currentCallCount === 0)
-                                Remote.RemoteCall.OnStop.fire();
-                        }
-                        reject(_this.constructException(jqXHR, textStatus, errorThrown));
-                    });
-                    if (fireEvents) {
-                        if (Remote.RemoteCall.currentCallCount === 0)
-                            Remote.RemoteCall.OnStart.fire();
-                        Remote.RemoteCall.currentCallCount++;
                     }
-                });
+                    if (attribute) {
+                        if (!object.$events[attribute]) {
+                            var newName = '#' + attribute;
+                            var val = object[attribute];
+                            if (typeof (val) !== 'function') {
+                                object[newName] = val;
+                                delete object[attribute];
+                                Observer.$defineEvent(object, attribute, newName);
+                                object[attribute] = new TSF.Events.ValueEvent();
+                            }
+                        }
+                        object.$events[attribute].add(method, callBackObject);
+                    }
+                    else {
+                        object.$objectChangeEvent.add(method, callBackObject);
+                    }
+                }
+                else {
+                    throw new Exception("Must provide a callBackObject and method to listen to events");
+                }
             };
             /**
-             * Creates an exception based on the response of a call
-             * @param XMLHttpRequest - the response from the remote call
-             * @param textStatus - the status of the call
-             * @param errorThrown - the errorthrown of the call
-             * @param url - the url requested from the call
+             * Stops observing a specific attribute
+             * @param object - the object to stop observing
+             * @param callBackObject - the object that was listening
+             * @param method - the method to remove from the event handeler
+             * @param attribute - the attribute to stop listening to.
              */
-            RemoteCall.constructException = function (XMLHttpRequest, textStatus, errorThrown, url) {
-                var exception = null;
-                try {
-                    exception = XMLHttpRequest.responseText ? $.parseJSON(XMLHttpRequest.responseText) : new Remote.RemoteException("no response");
+            Observer.$stopObserving = function (object, callBackObject, method, attribute) {
+                if (callBackObject && method) {
+                    if (attribute) {
+                        var event = object.$events[attribute];
+                        if (event)
+                            event;
+                        else {
+                            throw new Exception("There is no one observering this objecet to stop observing it");
+                        }
+                        event.remove(method, callBackObject);
+                    }
+                    else {
+                        throw new Exception("Must provide a callBackObject and method to listen to events");
+                    }
                 }
-                catch (error2) {
-                    exception = new Remote.RemoteException();
-                }
-                exception.TextStatus = textStatus;
-                exception.jQueryXHR = XMLHttpRequest;
-                exception.url = url;
-                exception.ErrorThrown = errorThrown;
-                console.error(exception);
-                return exception;
             };
-            return RemoteCall;
+            /** parameters not to convert into getters and setters that fire events */
+            Observer.$exclusions = {
+                '$exclusions': true, '$observe': true, '$alertObservers': true, '$definEvent': true, '$setValueNoEvent': true, '$setAttributeWithoutEvent': true, '$stopObserving': true, '$events': true, '$objectChangeEvent': true, '$regEvents': true, '$dirty': true
+            };
+            return Observer;
         }());
-        /** Fires when a remote call has been fired and there currently isn't another remote call in progress that has fire events set to true */
-        RemoteCall.OnStart = new TSF.Events.EmptyEvent();
-        /** Fired when all remote calls are finished.  This means that if more then one call is made before the previous one has finished
-        then all remote calls have to finish before the OnStop event is fired if all methods are marked with fire events.  */
-        RemoteCall.OnStop = new TSF.Events.EmptyEvent();
-        /** keeps track of the current number of remote calls being done through this class */
-        RemoteCall.currentCallCount = 0;
-        Remote.RemoteCall = RemoteCall;
-    })(Remote = TSF.Remote || (TSF.Remote = {}));
+        Data.Observer = Observer;
+    })(Data = TSF.Data || (TSF.Data = {}));
 })(TSF || (TSF = {}));
-/// <reference path="..\Events\EmptyEvent.ts" />
-/// <reference path="..\Remote\Remote.ts" />
+/// <reference path="..\Events\EventHandler.ts" />
 var TSF;
+/// <reference path="..\Events\EventHandler.ts" />
 (function (TSF) {
-    var Base;
-    (function (Base) {
+    var Data;
+    (function (Data) {
         /**
-         * Base functionality for TSF that constructs the elements based on the html attributes.
+         * An event fired when a data source has its page changed
          */
-        var TSBase = (function () {
-            function TSBase() {
+        var PageChangeEvent = /** @class */ (function (_super) {
+            __extends(PageChangeEvent, _super);
+            function PageChangeEvent() {
+                return _super !== null && _super.apply(this, arguments) || this;
             }
             /**
-             * Goes through the HTML and constructs the controls marked in the html
-             * @param element
+             * Fires the page change event
+             * @param pageNum - the page being changed to
+             * @param maxRecords - the max number of records available to make pages from
              */
-            TSBase.constructControls = function (element) {
-                if (TSBase.defaultTypes === undefined)
-                    TSBase.defaultTypes = {
-                        BUTTON: TSF.UI.Button, INPUT: { CHECKBOX: TSF.UI.Checkbox, TEXT: TSF.UI.TextBox, SUBMIT: TSF.UI.Button, BUTTON: TSF.UI.Button, RADIO: TSF.UI.RadioButton }, IMG: TSF.UI.Image, TABLE: TSF.UI.Grid.WunderGrid, SELECT: { '': TSF.UI.DropDown, MULTIPLE: TSF.UI.MultiSelect }
-                    };
-                var elements = new Array();
-                elements.push({ ele: element, name: "" });
-                var curName = "";
-                while (elements.length > 0) {
-                    var link = elements.pop();
-                    var node = link.ele;
-                    curName = link.name;
-                    var tsClass = node.getAttribute('TSClass');
-                    var name = node.getAttribute('var');
-                    var parent_1 = link.logicalParent;
-                    if (tsClass !== null && tsClass !== undefined) {
-                        if (name !== undefined && name.length > 0) {
-                            var res = TSBase.getRelativeObjects.apply(this, [name, parent_1]);
-                            var clss = eval(tsClass);
-                            var ctrl = new clss(node, res.parent);
-                            if (!res.parent)
-                                window[res.att] = ctrl;
-                            else
-                                res.parent[res.att] = ctrl;
-                            parent_1 = ctrl;
-                        }
-                        else {
-                            var ctrl = eval('new ' + tsClass + '(node)');
-                            parent_1 = ctrl;
-                        }
-                    }
-                    else if (name !== null && name !== undefined) {
-                        var res = TSBase.getRelativeObjects.apply(this, [name, parent_1]);
-                        var type = node.nodeName.toUpperCase();
-                        var def = TSBase.defaultTypes[type];
-                        if (type == "INPUT") {
-                            type = node.getAttribute('type');
-                            if (type !== undefined && type !== null)
-                                type = type.toUpperCase();
-                            def = def[type];
-                        }
-                        else if (type == "SELECT") {
-                            if (node.hasAttribute('MULTIPLE'))
-                                def = def['MULTIPLE'];
-                            else
-                                def = def[''];
-                        }
-                        var ctrl = void 0;
-                        if (def !== undefined && def !== null)
-                            ctrl = new def(node, res.parent);
-                        else
-                            ctrl = new TSF.UI.TSControl(node, res.parent);
-                        if (!res.parent)
-                            window[res.att] = ctrl;
-                        else
-                            res.parent[res.att] = ctrl;
-                        parent_1 = ctrl;
-                    }
-                    var len = node.children.length;
-                    for (var i = 0; i < len; i++) {
-                        elements.push({ ele: node.children[len - i - 1], logicalParent: parent_1 });
-                    }
-                }
+            PageChangeEvent.prototype.fire = function (pageNum, maxRecords) {
+                _super.prototype.fire.call(this, pageNum, maxRecords);
             };
-            /**
-            * Not intended for use outside of framework.  Used to handle relative paths in the var element of
-            * html elements.
-            * @param path - path to assign this control to.
-            */
-            TSBase.getRelativeObjects = function (path, parentNode) {
-                var pth = path.trim();
-                var splitPath = pth.split(/[\.]/g);
-                var len = splitPath.length;
-                len = len - 1;
-                if (pth[0] !== '.') {
-                    var att = splitPath.pop();
-                    var par = eval(splitPath.join('.'));
-                    return { parent: par, att: att };
-                }
-                var currentNode;
-                if (splitPath[0] == '')
-                    currentNode = parentNode;
-                for (var i = 1; i < len; i++) {
-                    if (!currentNode || splitPath[i] !== '')
-                        break;
-                    currentNode = currentNode.logicalParent;
-                }
-                if (currentNode) {
-                    var temp = splitPath.slice(i, splitPath.length);
-                    var att = temp.pop();
-                    var par_1;
-                    if (temp.length == 0)
-                        par_1 = currentNode;
-                    else
-                        par_1 = currentNode[temp.join('.')];
-                    return { parent: par_1, att: att };
-                }
-            };
-            return TSBase;
-        }());
-        TSBase.onInit = new TSF.Events.EmptyEvent();
-        TSBase.defaultTypes = undefined;
-        Base.TSBase = TSBase;
-        $(function () {
-            TSBase.constructControls.apply(window, [document.documentElement]);
-            TSBase.onInit.fire();
-        });
-    })(Base = TSF.Base || (TSF.Base = {}));
+            return PageChangeEvent;
+        }(TSF.Events.EventHandler));
+        Data.PageChangeEvent = PageChangeEvent;
+    })(Data = TSF.Data || (TSF.Data = {}));
 })(TSF || (TSF = {}));
+var TSF;
+(function (TSF) {
+    var Data;
+    (function (Data) {
+        /**
+         * Contains data related to a remote call including criteria, which columns to pull back, sort order and server side paging options.
+         */
+        var Query = /** @class */ (function () {
+            function Query() {
+                /** columns to retreive */
+                this.columns = new Array();
+            }
+            return Query;
+        }());
+        Data.Query = Query;
+    })(Data = TSF.Data || (TSF.Data = {}));
+})(TSF || (TSF = {}));
+var TSF;
+(function (TSF) {
+    var Data;
+    (function (Data) {
+        /** sort direction of a query */
+        var SortDirection;
+        (function (SortDirection) {
+            SortDirection[SortDirection["ASC"] = 0] = "ASC";
+            SortDirection[SortDirection["DESC"] = 1] = "DESC";
+        })(SortDirection = Data.SortDirection || (Data.SortDirection = {}));
+        /**
+         * The sort element of a query.
+         */
+        var SortElement = /** @class */ (function () {
+            /**
+             * The sort element of a query.
+             * @param column - the column to sort by
+             * @param sortDirection - the direction to sort by (optional.  Sorts by Ascending by default).
+             */
+            function SortElement(column, sortDirection) {
+                if (sortDirection === void 0) { sortDirection = SortDirection.ASC; }
+                this.column = column;
+                this.sortDirection = sortDirection;
+            }
+            return SortElement;
+        }());
+        Data.SortElement = SortElement;
+    })(Data = TSF.Data || (TSF.Data = {}));
+})(TSF || (TSF = {}));
+/// <reference path="..\..\Base\Exception.ts" />
+/// <reference path="..\..\Events\ValueEvent.ts" />
+var TSF;
+/// <reference path="..\..\Base\Exception.ts" />
+/// <reference path="..\..\Events\ValueEvent.ts" />
+(function (TSF) {
+    var Data;
+    (function (Data) {
+        var AbstractClasses;
+        (function (AbstractClasses) {
+            /**
+             * If an object inherits from this class it becomes observable.  Meaning you can listen for attribute changes on the object
+             */
+            var AObservable = /** @class */ (function () {
+                function AObservable() {
+                    /** holds a hashtable of events by attribute */
+                    this.$events = {};
+                    /** the event for if any value on the object has changed (does not work if the attribute was not defined with a value before hand) */
+                    this.$objectChangeEvent = new TSF.Events.ValueEvent();
+                    /** used to determine if the events have been created yet for this object */
+                    this.$regEvents = false;
+                    /** is set to true if the any value on the object has changed */
+                    this.$dirty = false;
+                }
+                /**
+                 * Sets the value of an object without triggering an event
+                 * @param attr - attribute to set
+                 * @param val - value to set the attribute to
+                 */
+                AObservable.prototype.$setAttributeWithoutEvent = function (attr, val) {
+                    Data.Observer.$setValueNoEvent(this, attr, val);
+                };
+                /**
+                 * Observes a speific attribute of an object
+                 * @param callBackObject - object listening
+                 * @param method - method to call when the attribute has changed
+                 * @param attribute - the attribute to listen for (optional.  If left blank triggers the method on any attribute change)
+                 */
+                AObservable.prototype.$observe = function (callBackObject, method, attribute) {
+                    Data.Observer.$observe(this, callBackObject, method, attribute);
+                };
+                /**
+                 * Stops observing a the objects event
+                 * @param callBackObject - the object that was listening
+                 * @param method - the method that should no longer be called on value change
+                 * @param attribute - the attribute to stop listening to (optional.  If left blank will stop listening to object change events)
+                 */
+                AObservable.prototype.$stopObserving = function (callBackObject, method, attribute) {
+                    Data.Observer.$stopObserving(this, callBackObject, method, attribute);
+                };
+                return AObservable;
+            }());
+            AbstractClasses.AObservable = AObservable;
+        })(AbstractClasses = Data.AbstractClasses || (Data.AbstractClasses = {}));
+    })(Data = TSF.Data || (TSF.Data = {}));
+})(TSF || (TSF = {}));
+/// <reference path=".\IDataSource.ts" />
 /*Data Structures*/
 var TSF;
+/*Data Structures*/
 (function (TSF) {
     var DS;
     (function (DS) {
         /**
          * Linked list structure
          */
-        var LinkList = (function () {
+        var LinkList = /** @class */ (function () {
             function LinkList() {
                 this.count = 0;
             }
@@ -2689,7 +1797,7 @@ var TSF;
             return LinkList;
         }());
         DS.LinkList = LinkList;
-        var Link = (function () {
+        var Link = /** @class */ (function () {
             function Link() {
             }
             return Link;
@@ -2704,7 +1812,7 @@ var TSF;
         /**
          *  Used to interface with the .Net tuple
          */
-        var Tuple = (function () {
+        var Tuple = /** @class */ (function () {
             function Tuple(Item1, Item2, Item3, Item4, Item5, Item6, Item7) {
                 this.Item1 = Item1;
                 this.Item2 = Item2;
@@ -2719,329 +1827,16 @@ var TSF;
         DS.Tuple = Tuple;
     })(DS = TSF.DS || (TSF.DS = {}));
 })(TSF || (TSF = {}));
-var TSF;
-(function (TSF) {
-    var Data;
-    (function (Data) {
-        /**
-         * Holds a group of criteria to be enclosed in paranthesis
-         */
-        var CriteriaGroup = (function () {
-            /**
-             * how to join the group onto the previous criteria.
-             * @param join
-             */
-            function CriteriaGroup(join) {
-                if (join === void 0) { join = Data.CriteriaJoin.And; }
-                /** the list of criteria for the group*/
-                this.criteria = new Array();
-                /** sub groups of the groups*/
-                this.groups = new Array();
-                this.join = join;
-            }
-            return CriteriaGroup;
-        }());
-        Data.CriteriaGroup = CriteriaGroup;
-    })(Data = TSF.Data || (TSF.Data = {}));
-})(TSF || (TSF = {}));
-/// <reference path=".\IDataSource.ts" />
 /// <reference path=".\EventHandler.ts" />
 var TSF;
-(function (TSF) {
-    var Events;
-    (function (Events) {
-        /**
-         * Basic event with one argument that can be dynamically typed.
-         */
-        var ValueEvent = (function (_super) {
-            __extends(ValueEvent, _super);
-            function ValueEvent() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            /**
-             * Fires the event
-             * @param value - the value to be passed into the listening methods.
-             */
-            ValueEvent.prototype.fire = function (value) {
-                _super.prototype.fire.call(this, value);
-            };
-            return ValueEvent;
-        }(Events.EventHandler));
-        Events.ValueEvent = ValueEvent;
-    })(Events = TSF.Events || (TSF.Events = {}));
-})(TSF || (TSF = {}));
-/// <reference path="..\..\Base\Exception.ts" />
-/// <reference path="..\..\Events\ValueEvent.ts" />
-var TSF;
-(function (TSF) {
-    var Data;
-    (function (Data) {
-        var AbstractClasses;
-        (function (AbstractClasses) {
-            /**
-             * If an object inherits from this class it becomes observable.  Meaning you can listen for attribute changes on the object
-             */
-            var AObservable = (function () {
-                function AObservable() {
-                    /** holds a hashtable of events by attribute */
-                    this.$events = {};
-                    /** the event for if any value on the object has changed (does not work if the attribute was not defined with a value before hand) */
-                    this.$objectChangeEvent = new TSF.Events.ValueEvent();
-                    /** used to determine if the events have been created yet for this object */
-                    this.$regEvents = false;
-                    /** is set to true if the any value on the object has changed */
-                    this.$dirty = false;
-                }
-                /**
-                 * Sets the value of an object without triggering an event
-                 * @param attr - attribute to set
-                 * @param val - value to set the attribute to
-                 */
-                AObservable.prototype.$setAttributeWithoutEvent = function (attr, val) {
-                    Data.Observer.$setValueNoEvent(this, attr, val);
-                };
-                /**
-                 * Observes a speific attribute of an object
-                 * @param callBackObject - object listening
-                 * @param method - method to call when the attribute has changed
-                 * @param attribute - the attribute to listen for (optional.  If left blank triggers the method on any attribute change)
-                 */
-                AObservable.prototype.$observe = function (callBackObject, method, attribute) {
-                    Data.Observer.$observe(this, callBackObject, method, attribute);
-                };
-                /**
-                 * Stops observing a the objects event
-                 * @param callBackObject - the object that was listening
-                 * @param method - the method that should no longer be called on value change
-                 * @param attribute - the attribute to stop listening to (optional.  If left blank will stop listening to object change events)
-                 */
-                AObservable.prototype.$stopObserving = function (callBackObject, method, attribute) {
-                    Data.Observer.$stopObserving(this, callBackObject, method, attribute);
-                };
-                return AObservable;
-            }());
-            AbstractClasses.AObservable = AObservable;
-        })(AbstractClasses = Data.AbstractClasses || (Data.AbstractClasses = {}));
-    })(Data = TSF.Data || (TSF.Data = {}));
-})(TSF || (TSF = {}));
-/// <reference path="..\Base\Exception.ts" />
-/// <reference path="..\Events\ValueEvent.ts" />
-var TSF;
-(function (TSF) {
-    var Data;
-    (function (Data) {
-        var Exception = TSF.Base.Exception;
-        /**
-         * Class that holds logic for making objects observable.
-         */
-        var Observer = (function () {
-            function Observer() {
-            }
-            /**
-             * Alerts other objects listening for changes on this object
-             * @param object - the object to fire the events for
-             * @param attribute - the attribute to fire the event for (optional.  Will fire on change of object if not provided)
-             */
-            Observer.$alertObservers = function (object, attribute) {
-                if (attribute) {
-                    var event = object.$events[attribute];
-                    if (event)
-                        event.fire(object);
-                    object.$objectChangeEvent.fire(object);
-                }
-                else
-                    object.$objectChangeEvent.fire(object);
-            };
-            /**
-             * Defines the getters and setters that trigger events when their values change
-             * @param object - the object to define the event for
-             * @param att - the attribute to define the event for
-             * @param newName - the name to use for the value of the attribute
-             */
-            Observer.$defineEvent = function (object, att, newName) {
-                var me = object;
-                Object.defineProperty(object, att, {
-                    get: function () { return this[newName]; },
-                    set: function (value) { var oldVal = me[newName]; me[newName] = value; if (oldVal !== value) {
-                        me.$dirty = true;
-                        Observer.$alertObservers(me, att);
-                    } }
-                });
-                object.$events[att] = new TSF.Events.ValueEvent();
-            };
-            /**
-             * Allows setting of a value without triggering an event
-             * @param obj - object to set the value for
-             * @param attr - the attribute to set
-             * @param val - the value to assign to the attribute
-             */
-            Observer.$setValueNoEvent = function (obj, attr, val) {
-                obj['#' + attr] = val;
-            };
-            /**
-             * observes a specific attribute of an object and makes the object obserable if it isn't already
-             * @param object - object to observe
-             * @param callBackObject - the object listening for the event
-             * @param method - the method to fire
-             * @param attribute - the attribute to observe
-             */
-            Observer.$observe = function (object, callBackObject, method, attribute) {
-                if (callBackObject && method) {
-                    if (object.$regEvents === undefined) {
-                        object.$events = {};
-                        object.$objectChangeEvent = new TSF.Events.ValueEvent();
-                        object.$regEvents = false;
-                        object.$dirty = false;
-                    }
-                    if (!object.$regEvents) {
-                        object.$regEvents = true;
-                        for (var att in object) {
-                            if (Observer.$exclusions[att] === undefined) {
-                                var newName = '#' + att;
-                                var val = object[att];
-                                if (typeof (val) !== 'function') {
-                                    object[newName] = val;
-                                    delete object[att];
-                                    Observer.$defineEvent(object, att, newName);
-                                    object.$events[att] = new TSF.Events.ValueEvent();
-                                }
-                            }
-                        }
-                    }
-                    if (attribute) {
-                        if (!object.$events[attribute]) {
-                            var newName = '#' + attribute;
-                            var val = object[attribute];
-                            if (typeof (val) !== 'function') {
-                                object[newName] = val;
-                                delete object[attribute];
-                                Observer.$defineEvent(object, attribute, newName);
-                                object[attribute] = new TSF.Events.ValueEvent();
-                            }
-                        }
-                        object.$events[attribute].add(method, callBackObject);
-                    }
-                    else {
-                        object.$objectChangeEvent.add(method, callBackObject);
-                    }
-                }
-                else {
-                    throw new Exception("Must provide a callBackObject and method to listen to events");
-                }
-            };
-            /**
-             * Stops observing a specific attribute
-             * @param object - the object to stop observing
-             * @param callBackObject - the object that was listening
-             * @param method - the method to remove from the event handeler
-             * @param attribute - the attribute to stop listening to.
-             */
-            Observer.$stopObserving = function (object, callBackObject, method, attribute) {
-                if (callBackObject && method) {
-                    if (attribute) {
-                        var event = object.$events[attribute];
-                        if (event)
-                            event;
-                        else {
-                            throw new Exception("There is no one observering this objecet to stop observing it");
-                        }
-                        event.remove(method, callBackObject);
-                    }
-                    else {
-                        throw new Exception("Must provide a callBackObject and method to listen to events");
-                    }
-                }
-            };
-            return Observer;
-        }());
-        /** parameters not to convert into getters and setters that fire events */
-        Observer.$exclusions = {
-            '$exclusions': true, '$observe': true, '$alertObservers': true, '$definEvent': true, '$setValueNoEvent': true, '$setAttributeWithoutEvent': true, '$stopObserving': true, '$events': true, '$objectChangeEvent': true, '$regEvents': true, '$dirty': true
-        };
-        Data.Observer = Observer;
-    })(Data = TSF.Data || (TSF.Data = {}));
-})(TSF || (TSF = {}));
-/// <reference path="..\Events\EventHandler.ts" />
-var TSF;
-(function (TSF) {
-    var Data;
-    (function (Data) {
-        /**
-         * An event fired when a data source has its page changed
-         */
-        var PageChangeEvent = (function (_super) {
-            __extends(PageChangeEvent, _super);
-            function PageChangeEvent() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            /**
-             * Fires the page change event
-             * @param pageNum - the page being changed to
-             * @param maxRecords - the max number of records available to make pages from
-             */
-            PageChangeEvent.prototype.fire = function (pageNum, maxRecords) {
-                _super.prototype.fire.call(this, pageNum, maxRecords);
-            };
-            return PageChangeEvent;
-        }(TSF.Events.EventHandler));
-        Data.PageChangeEvent = PageChangeEvent;
-    })(Data = TSF.Data || (TSF.Data = {}));
-})(TSF || (TSF = {}));
-var TSF;
-(function (TSF) {
-    var Data;
-    (function (Data) {
-        /**
-         * Contains data related to a remote call including criteria, which columns to pull back, sort order and server side paging options.
-         */
-        var Query = (function () {
-            function Query() {
-                /** columns to retreive */
-                this.columns = new Array();
-            }
-            return Query;
-        }());
-        Data.Query = Query;
-    })(Data = TSF.Data || (TSF.Data = {}));
-})(TSF || (TSF = {}));
-var TSF;
-(function (TSF) {
-    var Data;
-    (function (Data) {
-        /** sort direction of a query */
-        var SortDirection;
-        (function (SortDirection) {
-            SortDirection[SortDirection["ASC"] = 0] = "ASC";
-            SortDirection[SortDirection["DESC"] = 1] = "DESC";
-        })(SortDirection = Data.SortDirection || (Data.SortDirection = {}));
-        /**
-         * The sort element of a query.
-         */
-        var SortElement = (function () {
-            /**
-             * The sort element of a query.
-             * @param column - the column to sort by
-             * @param sortDirection - the direction to sort by (optional.  Sorts by Ascending by default).
-             */
-            function SortElement(column, sortDirection) {
-                if (sortDirection === void 0) { sortDirection = SortDirection.ASC; }
-                this.column = column;
-                this.sortDirection = sortDirection;
-            }
-            return SortElement;
-        }());
-        Data.SortElement = SortElement;
-    })(Data = TSF.Data || (TSF.Data = {}));
-})(TSF || (TSF = {}));
 /// <reference path=".\EventHandler.ts" />
-var TSF;
 (function (TSF) {
     var Events;
     (function (Events) {
         /**
          * Event handeler specifically for check changed event.  Takes a sender:UI.Checkbox,checked:boolean and args:any for input
          */
-        var CheckedChangedEvent = (function (_super) {
+        var CheckedChangedEvent = /** @class */ (function (_super) {
             __extends(CheckedChangedEvent, _super);
             function CheckedChangedEvent() {
                 return _super !== null && _super.apply(this, arguments) || this;
@@ -3061,13 +1856,14 @@ var TSF;
 })(TSF || (TSF = {}));
 /// <reference path=".\EventHandler.ts" />
 var TSF;
+/// <reference path=".\EventHandler.ts" />
 (function (TSF) {
     var Events;
     (function (Events) {
         /**
          * Standard event handeler with generic types signature (sender:any, args:any)
          */
-        var Event = (function (_super) {
+        var Event = /** @class */ (function (_super) {
             __extends(Event, _super);
             function Event() {
                 return _super !== null && _super.apply(this, arguments) || this;
@@ -3082,13 +1878,14 @@ var TSF;
 })(TSF || (TSF = {}));
 /// <reference path=".\EventHandler.ts" />
 var TSF;
+/// <reference path=".\EventHandler.ts" />
 (function (TSF) {
     var Events;
     (function (Events) {
         /**
          * UI event handeler with generic signatures (sender:sender, args:args)
          */
-        var GenericEvent = (function (_super) {
+        var GenericEvent = /** @class */ (function (_super) {
             __extends(GenericEvent, _super);
             function GenericEvent() {
                 return _super !== null && _super.apply(this, arguments) || this;
@@ -3103,13 +1900,14 @@ var TSF;
 })(TSF || (TSF = {}));
 /// <reference path=".\EventHandler.ts" />
 var TSF;
+/// <reference path=".\EventHandler.ts" />
 (function (TSF) {
     var Events;
     (function (Events) {
         /**
         * UI event handeler with specific signatures (sender:UI.TSControl, args:any)
         */
-        var UIEvent = (function (_super) {
+        var UIEvent = /** @class */ (function (_super) {
             __extends(UIEvent, _super);
             function UIEvent() {
                 return _super !== null && _super.apply(this, arguments) || this;
@@ -3122,8 +1920,215 @@ var TSF;
         Events.UIEvent = UIEvent;
     })(Events = TSF.Events || (TSF.Events = {}));
 })(TSF || (TSF = {}));
+/// <reference path=".\LogicalControl.ts" />
+var TSF;
+/// <reference path=".\LogicalControl.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        var TSControl = /** @class */ (function (_super) {
+            __extends(TSControl, _super);
+            /**
+             * A Base control that can be used in the html markup or just constructed plainly in javacsript
+             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
+             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
+             */
+            function TSControl(ele, logicalParent) {
+                var _this = _super.call(this, ele, logicalParent) || this;
+                _this.context = {};
+                if (ele !== undefined) {
+                    var clickEvent = _this.jElement.attr('onclick');
+                    if (clickEvent !== null && clickEvent !== undefined) {
+                        _this.OnClick.add(function (sender, args) { eval(clickEvent); }, (logicalParent === undefined) ? _this : logicalParent);
+                    }
+                    var doubleClickEvent = _this.jElement.attr('ondblclick');
+                    if (doubleClickEvent !== null && doubleClickEvent !== undefined) {
+                        _this.OnDoubleClick.add(function (sender, args) { eval(doubleClickEvent); }, (logicalParent === undefined) ? _this : logicalParent);
+                    }
+                    _this.loadConfiguration('args');
+                }
+                return _this;
+            }
+            Object.defineProperty(TSControl.prototype, "OnClick", {
+                /** The on click event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
+                get: function () {
+                    var _this = this;
+                    if (this.onClick === undefined) {
+                        this.onClick = new TSF.Events.UIEvent();
+                        this.element.onclick = function () { return _this.onClick.fire(_this, _this.args); };
+                    }
+                    return this.onClick;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(TSControl.prototype, "OnDoubleClick", {
+                /** The on double click event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
+                get: function () {
+                    var _this = this;
+                    if (this.onDoubleClick === undefined) {
+                        this.onDoubleClick = new TSF.Events.UIEvent();
+                        this.element.ondblclick = function () { return _this.onDoubleClick.fire(_this, _this.args); };
+                    }
+                    return this.onDoubleClick;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            /**
+             * Appends a control to the child elements of the current control
+             * @param control - the control to append
+             */
+            TSControl.prototype.Append = function (control) {
+                this.jElement.append(control.jElement);
+            };
+            /**
+             * Insert control before the provided control in the html
+             * @param control - the control to insert this object before
+             */
+            TSControl.prototype.InsertBefore = function (control) {
+                this.jElement.insertBefore(control.jElement);
+            };
+            /**
+             * Insert control after the provided control in the html
+             * @param control - the control to insert this object after
+             */
+            TSControl.prototype.InsertAfter = function (control) {
+                this.jElement.insertAfter(control.jElement);
+            };
+            /**
+             * clears all of the child html elements from the control
+             */
+            TSControl.prototype.emptyContent = function () {
+                this.jElement.empty();
+            };
+            Object.defineProperty(TSControl.prototype, "TagName", {
+                /** returns the tag name of the element*/
+                get: function () {
+                    return this.element.tagName;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(TSControl.prototype, "Class", {
+                /** returns the class name of the element */
+                get: function () {
+                    return this.element.className;
+                },
+                /** Sets the class name of the element */
+                set: function (val) {
+                    this.element.className = val;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(TSControl.prototype, "Attributes", {
+                /** The attributes of the element */
+                get: function () {
+                    return this.element.attributes;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(TSControl.prototype, "Style", {
+                /** the style of the element */
+                get: function () {
+                    return this.element.style;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(TSControl.prototype, "Text", {
+                /** Text of the html element */
+                get: function () {
+                    return this.jElement.text();
+                },
+                /** Text of the html element */
+                set: function (val) {
+                    this.jElement.text(val);
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(TSControl.prototype, "Value", {
+                /** Value of the html element */
+                get: function () {
+                    return this.jElement.val();
+                },
+                /** Value of the html element */
+                set: function (val) {
+                    this.jElement.val(val);
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(TSControl.prototype, "Disabled", {
+                /** Get or set the disabled status of the element */
+                get: function () {
+                    return this.disabled;
+                },
+                /** Get or set the disabled status of the element */
+                set: function (value) {
+                    if (value !== this.disabled) {
+                        if (value === true) {
+                            this.disabled = true;
+                            this.jElement.removeAttr('disabled');
+                        }
+                        else {
+                            this.disabled = false;
+                            this.jElement.attr('disabled', 'disabled');
+                        }
+                    }
+                },
+                enumerable: false,
+                configurable: true
+            });
+            /**
+             * Hides the control (display:none)
+             */
+            TSControl.prototype.hide = function () {
+                this.previousDisplay = this.element.style.display;
+                this.jElement.hide();
+            };
+            /**
+             * Shows the control.  Sets the previous display type if hide was used previously
+             */
+            TSControl.prototype.show = function () {
+                if (!this.previousDisplay && this.previousDisplay.toUpperCase() !== "NONE")
+                    this.element.style.display = this.previousDisplay;
+                else
+                    this.jElement.show();
+            };
+            /**
+             * load html content into the body construct any controls used specified in the markup.  This can be used to refer to
+             * this object in the var attribute in this method.
+             * @param data - html data to load into the control
+             */
+            TSControl.prototype.loadHtml = function (data) {
+                if (data !== undefined) {
+                    if (this.jElement === undefined) {
+                        this.jElement = $(data);
+                        this.element = this.jElement[0];
+                        TSF.Base.TSBase.constructControls.apply(this, [this.element]);
+                    }
+                    else {
+                        this.jElement.append($(data));
+                        var children = this.element.children;
+                        var len = children.length;
+                        for (var i = 0; i < len; i++)
+                            TSF.Base.TSBase.constructControls.apply(this, [children[i]]);
+                    }
+                }
+            };
+            TSControl.eventList = {};
+            return TSControl;
+        }(UI.LogicalControl));
+        UI.TSControl = TSControl;
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
 /// <reference path=".\TSControl.ts" />
 var TSF;
+/// <reference path=".\TSControl.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
@@ -3137,7 +2142,7 @@ var TSF;
         /**
          * Class that represents a button.
          */
-        var Button = (function (_super) {
+        var Button = /** @class */ (function (_super) {
             __extends(Button, _super);
             /**
              * A Button control that can be used in the html markup or just constructed plainly in javacsript
@@ -3160,7 +2165,7 @@ var TSF;
                 set: function (type) {
                     this.element.setAttribute('type', ButtonType[type]);
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             return Button;
@@ -3170,13 +2175,14 @@ var TSF;
 })(TSF || (TSF = {}));
 /// <reference path=".\TSControl.ts" />
 var TSF;
+/// <reference path=".\TSControl.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
         /**
          * Class that represents a checkbox and on as check change events etc.  Also implements the ability to do indeterminate checkboxes
          */
-        var Checkbox = (function (_super) {
+        var Checkbox = /** @class */ (function (_super) {
             __extends(Checkbox, _super);
             /**
              * A Checkbox control that can be used in the html markup or just constructed plainly in javacsript
@@ -3213,7 +2219,7 @@ var TSF;
                         this.element.indeterminate = true;
                     }
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             Object.defineProperty(Checkbox.prototype, "Checked", {
@@ -3231,7 +2237,7 @@ var TSF;
                     if (val !== undefined)
                         this.element.indeterminate = false;
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             Object.defineProperty(Checkbox.prototype, "OnCheckedChanged", {
@@ -3243,7 +2249,7 @@ var TSF;
                     }
                     return this.onCheckedChanged;
                 },
-                enumerable: true,
+                enumerable: false,
                 configurable: true
             });
             Checkbox.prototype.handleCheckedChanged = function (sender, checked, args) {
@@ -3269,7 +2275,7 @@ var TSF;
         /**
          *  Used to specify columns for the wunder grid.
          */
-        var Column = (function () {
+        var Column = /** @class */ (function () {
             /**
              * Used to specify columns for the wunder grid.
              * @param dataField - attribute of the object to bind the the cell for the given column
@@ -3297,106 +2303,861 @@ var TSF;
         UI.Column = Column;
     })(UI = TSF.UI || (TSF.UI = {}));
 })(TSF || (TSF = {}));
+/// <reference path=".\TSControl.ts" />
 var TSF;
+/// <reference path=".\TSControl.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
-        var Grid;
-        (function (Grid) {
-            var Extensions;
-            (function (Extensions) {
-                var BaseEditableCell = (function () {
-                    function BaseEditableCell() {
-                    }
-                    BaseEditableCell.prototype.changeValue = function (sender, value) {
-                        var row = sender.context.row;
-                        var col = sender.context.col;
-                        var val = row.Data;
-                        val = eval('val.' + col.dataField.replace(/[;\r\n]*/g, '') + ' = value;');
+        /**
+      * Drop down control
+      */
+        var DropDown = /** @class */ (function (_super) {
+            __extends(DropDown, _super);
+            /**
+             * Drop down control
+             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
+             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
+             */
+            function DropDown(ele, logicalParent) {
+                var _this = _super.call(this, ele, logicalParent) || this;
+                /** Event fired when the selected item list has changed */
+                _this.onSelectionChanged = new TSF.Events.GenericEvent();
+                /** list of drop down items in the control */
+                _this.items = [];
+                /** the data source for the control */
+                _this.dataSource = undefined;
+                _this.checkEmptyEle('select');
+                _this.loadConfiguration('dataSource', 'TextKey', 'ValueKey');
+                var onchanged = _this.jElement.attr('onchange');
+                if (onchanged !== null && onchanged !== undefined) {
+                    _this.OnSelectionChanged.add(function (sender, args) { eval(onchanged); }, (logicalParent === undefined) ? _this : logicalParent);
+                }
+                if (_this.TextKey === undefined) {
+                    _this.TextKey = "text";
+                }
+                if (_this.ValueKey === undefined) {
+                    _this.ValueKey = "value";
+                }
+                if (_this.dataSource)
+                    _this.DataSource = _this.getRelativePath(_this.dataSource);
+                var initialData = null;
+                if ($("option", _this.jElement).length > 0) {
+                    initialData = new Array();
+                    var extractItemData = function (index, elem) {
+                        var item = new Object();
+                        item[_this.TextKey] = $(elem).text();
+                        item[_this.ValueKey] = $(elem).val();
+                        initialData.push(item);
                     };
-                    return BaseEditableCell;
-                }());
-                Extensions.BaseEditableCell = BaseEditableCell;
-            })(Extensions = Grid.Extensions || (Grid.Extensions = {}));
-        })(Grid = UI.Grid || (UI.Grid = {}));
+                    $("option", _this.jElement).each(extractItemData);
+                }
+                _this.jElement.empty();
+                var me = _this;
+                _this.element.onchange = function () { return _this.changeIndex(); };
+                if (initialData !== null) {
+                    _this.bind(initialData);
+                }
+                return _this;
+            }
+            Object.defineProperty(DropDown.prototype, "SelectedIndex", {
+                /** Selected index of the drop down -1 if none */
+                get: function () {
+                    return this.element.selectedIndex;
+                },
+                set: function (val) {
+                    this.element.selectedIndex = val;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(DropDown.prototype, "OnSelectionChanged", {
+                /** The on OnSelection Changed event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
+                get: function () {
+                    return this.onSelectionChanged;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(DropDown.prototype, "Items", {
+                /** gets the items in the drop down*/
+                get: function () {
+                    return this.items;
+                },
+                /** Sets the items on the drop down */
+                set: function (val) {
+                    this.emptyContent();
+                    if (val) {
+                        var len = val.length;
+                        for (var i = 0; i < len; i++) {
+                            var item = val[i];
+                            this.Append(item);
+                        }
+                    }
+                    this.items = val;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(DropDown.prototype, "SelectedItem", {
+                /** gets the selected dropdownitems of the control */
+                get: function () {
+                    return this.items[this.SelectedIndex];
+                },
+                /** sets the selected dropdownitems of the control.  This does change the UI Selection */
+                set: function (val) {
+                    val.element.selected = true;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(DropDown.prototype, "SelectedValue", {
+                /** gets the selected value of the control */
+                get: function () {
+                    if (this.SelectedIndex !== -1)
+                        return this.items[this.SelectedIndex].data;
+                    else
+                        return undefined;
+                },
+                /** sets the list of the selected value of the control.  This does change the UI Selection */
+                set: function (value) {
+                    if (value === undefined) {
+                        this.SelectedIndex = -1;
+                        return;
+                    }
+                    if (this.items !== undefined && this.items !== null) {
+                        var length = this.items.length;
+                        var index = -1;
+                        for (var i = 0; i < length; i++) {
+                            if (this.items[i].data == value) {
+                                index = i;
+                                break;
+                            }
+                        }
+                        if (index != -1)
+                            this.SelectedIndex = index;
+                    }
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(DropDown.prototype, "DataSource", {
+                /** Gets the data source of the object */
+                get: function () {
+                    return this.dataSource;
+                },
+                /** Sets te data source for the object */
+                set: function (value) {
+                    if (this.dataSource !== undefined && this.dataSource !== null && typeof this.dataSource !== 'string') {
+                        this.dataSource.onDataUpdated.remove(this.bind, this);
+                    }
+                    this.dataSource = value;
+                    if (this.dataSource != null) {
+                        this.dataSource.onDataUpdated.add(this.bind, this);
+                    }
+                },
+                enumerable: false,
+                configurable: true
+            });
+            /**
+     * Binds the data to the control given the TextKey and ValueKey to map the data
+     * @param data - data to bind to the control
+     */
+            DropDown.prototype.bind = function (data) {
+                this.jElement.empty();
+                for (var i = 0; i < data.length; i++) {
+                    var dat = data[i];
+                    var item;
+                    if (typeof dat == 'string')
+                        item = new UI.DropDownItem(dat, dat);
+                    else {
+                        if (this.ValueKey === 'valueOf')
+                            item = new UI.DropDownItem(dat[this.TextKey], dat);
+                        else
+                            item = new UI.DropDownItem(dat[this.TextKey], dat[this.ValueKey]);
+                    }
+                    this.items.push(item);
+                    item.index = i;
+                    item.jElement.attr('idx', i);
+                    var me = this;
+                    this.Append(item);
+                }
+                this.SelectedIndex = -1;
+            };
+            /**
+     * Gets underlying data to the drop down items if there is any.
+     */
+            DropDown.prototype.getData = function () {
+                return this.items.map(function (d) { return d.data; });
+            };
+            /**
+            * Handeles selection change.  Internal.
+            */
+            DropDown.prototype.changeIndex = function () {
+                if (this.items && this.items.length > 0)
+                    this.onSelectionChanged.fire(this, this.items[this.SelectedIndex]);
+            };
+            return DropDown;
+        }(UI.TSControl));
+        UI.DropDown = DropDown;
     })(UI = TSF.UI || (TSF.UI = {}));
 })(TSF || (TSF = {}));
-/// <reference path="BaseEditableCell.ts" />
+/// <reference path=".\TSControl.ts" />
 var TSF;
+/// <reference path=".\TSControl.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
-        var Grid;
-        (function (Grid) {
-            var Extensions;
-            (function (Extensions) {
-                var WunderTextCell = (function (_super) {
-                    __extends(WunderTextCell, _super);
-                    function WunderTextCell() {
-                        return _super !== null && _super.apply(this, arguments) || this;
-                    }
-                    WunderTextCell.prototype.generateCell = function (value, column, row, grid) {
-                        var _this = this;
-                        var cell = new Grid.WunderCell();
-                        var txt = new UI.TextBox();
-                        txt.element.style.width = "95%";
-                        txt.context.row = row;
-                        txt.context.col = column;
-                        txt.OnTextChange.add(function () { return _this.changeValue(txt, txt.Value); }, this);
-                        if (value !== null && value !== undefined)
-                            txt.Value = value.toString();
-                        cell.Append(txt);
-                        return cell;
-                    };
-                    return WunderTextCell;
-                }(Extensions.BaseEditableCell));
-                Extensions.WunderTextCell = WunderTextCell;
-            })(Extensions = Grid.Extensions || (Grid.Extensions = {}));
-        })(Grid = UI.Grid || (UI.Grid = {}));
+        /**
+             * Drop down item used in the drop down control which contains display and selected data info.
+             */
+        var DropDownItem = /** @class */ (function (_super) {
+            __extends(DropDownItem, _super);
+            function DropDownItem(text, value, element) {
+                var _this = _super.call(this, element) || this;
+                _this.checkEmptyEle('option');
+                if (value !== undefined && value != null)
+                    _this.jElement.val(value.toString());
+                _this.Text = text;
+                _this.data = value;
+                return _this;
+            }
+            return DropDownItem;
+        }(UI.TSControl));
+        UI.DropDownItem = DropDownItem;
     })(UI = TSF.UI || (TSF.UI = {}));
 })(TSF || (TSF = {}));
-/// <reference path="BaseEditableCell.ts" />
+/// <reference path=".\TSControl.ts" />
 var TSF;
+/// <reference path=".\TSControl.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        /**
+         *  An image control for displaying images on a page
+         */
+        var Image = /** @class */ (function (_super) {
+            __extends(Image, _super);
+            /**
+             * A Image control that can be used in the html markup or just constructed plainly in javacsript
+             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
+             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
+             */
+            function Image(ele, logicalParent) {
+                var _this = _super.call(this, ele, logicalParent) || this;
+                if (ele === undefined) {
+                    _this.checkEmptyEle('img');
+                }
+                return _this;
+            }
+            Object.defineProperty(Image.prototype, "Src", {
+                get: function () {
+                    return this.jElement.attr("src");
+                },
+                /** url source for the image */
+                set: function (value) {
+                    if (value === null || value === undefined)
+                        value = "";
+                    this.jElement.attr("src", value);
+                },
+                enumerable: false,
+                configurable: true
+            });
+            return Image;
+        }(UI.TSControl));
+        UI.Image = Image;
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
+/// <reference path=".\TSControl.ts" />
+var TSF;
+/// <reference path=".\TSControl.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        /**
+      * Drop down control
+      */
+        var MultiSelect = /** @class */ (function (_super) {
+            __extends(MultiSelect, _super);
+            /**
+             * Drop down control
+             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
+             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
+             */
+            function MultiSelect(ele, logicalParent) {
+                var _this = _super.call(this, ele, logicalParent) || this;
+                /** list of selected indicies */
+                _this.selectedIndicies = [];
+                /** Event fired when the selected item list has changed */
+                _this.onSelectionChanged = new TSF.Events.GenericEvent();
+                /** internal use only for not firing extra events */
+                _this.updatingSelected = false;
+                /** list of drop down items in the control */
+                _this.items = [];
+                /** the data source for the control */
+                _this.dataSource = undefined;
+                if (_this.Attributes['multiple'] === undefined)
+                    _this.element.setAttribute('multiple', '');
+                _this.checkEmptyEle('select');
+                _this.loadConfiguration('dataSource', 'TextKey', 'ValueKey');
+                var onchanged = _this.jElement.attr('onchange');
+                if (onchanged !== null && onchanged !== undefined) {
+                    _this.OnSelectionChanged.add(function (sender, args) { eval(onchanged); }, (logicalParent === undefined) ? _this : logicalParent);
+                }
+                if (_this.TextKey === undefined) {
+                    _this.TextKey = "text";
+                }
+                if (_this.ValueKey === undefined) {
+                    _this.ValueKey = "value";
+                }
+                if (_this.dataSource)
+                    _this.DataSource = _this.getRelativePath(_this.dataSource);
+                var initialData = null;
+                var i = 0;
+                if ($("option", _this.jElement).length > 0) {
+                    initialData = new Array();
+                    var extractItemData = function (index, elem) {
+                        var ele = $(elem);
+                        var item = new UI.DropDownItem(ele.text(), ele.val(), elem);
+                        _this.items.push(item);
+                        if (elem.selected)
+                            _this.selectedIndicies.push(i);
+                        item.index = i;
+                        item.jElement.attr('idx', i);
+                        i++;
+                    };
+                    $("option", _this.jElement).each(extractItemData);
+                }
+                var me = _this;
+                _this.element.onchange = function () { return _this.changeSelection(); };
+                return _this;
+            }
+            Object.defineProperty(MultiSelect.prototype, "OnSelectionChanged", {
+                /** The on OnSelection Changed event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
+                get: function () {
+                    return this.onSelectionChanged;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(MultiSelect.prototype, "SelectedValues", {
+                /** gets the list of selected values of the control */
+                get: function () {
+                    var items = this.SelectedItems;
+                    return items.map(function (x) { return x.data; });
+                },
+                /** sets the list of selected values of the control.  This does change the UI Selection */
+                set: function (value) {
+                    this.updatingSelected = true;
+                    this.selectedIndicies = [];
+                    if (value !== undefined && this.items !== undefined && this.items !== null) {
+                        var length = this.items.length;
+                        for (var i = 0; i < length; i++) {
+                            var item = this.items[i];
+                            var len = value.length;
+                            var found = false;
+                            for (var j = 0; j < len; j++) {
+                                if (item.data == value[j]) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found) {
+                                item.element.selected = true;
+                                this.selectedIndicies.push(i);
+                            }
+                            else
+                                item.element.selected = false;
+                        }
+                    }
+                    this.updatingSelected = false;
+                    this.onSelectionChanged.fire(this, this.SelectedItems);
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(MultiSelect.prototype, "Items", {
+                /** gets the items in the drop down*/
+                get: function () {
+                    return this.items;
+                },
+                /** Sets the items on the drop down */
+                set: function (val) {
+                    this.selectedIndicies = [];
+                    this.emptyContent();
+                    if (val) {
+                        var len = val.length;
+                        for (var i = 0; i < len; i++) {
+                            var item = val[i];
+                            this.Append(item);
+                            if (item.element.selected)
+                                this.selectedIndicies.push(i);
+                        }
+                    }
+                    this.items = val;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(MultiSelect.prototype, "SelectedItems", {
+                /** gets the selected dropdownitems of the control */
+                get: function () {
+                    var _this = this;
+                    return this.selectedIndicies.map(function (x) { return _this.items[x]; });
+                },
+                /** sets the selected dropdownitems of the control.  This does change the UI Selection */
+                set: function (val) {
+                    this.updatingSelected = true;
+                    this.selectedIndicies = [];
+                    this.element.selectedIndex = -1;
+                    if (val) {
+                        var length = val.length;
+                        for (var i = 0; i < length; i++) {
+                            var item = val[i];
+                            item.element.selected = true;
+                            this.selectedIndicies.push(item.element.index);
+                        }
+                    }
+                    this.selectedIndicies.sort();
+                    this.updatingSelected = false;
+                    this.onSelectionChanged.fire(this, val);
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(MultiSelect.prototype, "DataSource", {
+                /** Gets the data source of the object */
+                get: function () {
+                    return this.dataSource;
+                },
+                /** Sets te data source for the object */
+                set: function (value) {
+                    if (this.dataSource !== undefined && this.dataSource !== null && typeof this.dataSource !== 'string') {
+                        this.dataSource.onDataUpdated.remove(this.bind, this);
+                    }
+                    this.dataSource = value;
+                    if (this.dataSource != null) {
+                        this.dataSource.onDataUpdated.add(this.bind, this);
+                    }
+                },
+                enumerable: false,
+                configurable: true
+            });
+            /**
+             * Binds the data to the control given the TextKey and ValueKey to map the data
+             * @param data - data to bind to the control
+             */
+            MultiSelect.prototype.bind = function (data) {
+                this.items = [];
+                this.jElement.empty();
+                for (var i = 0; i < data.length; i++) {
+                    var dat = data[i];
+                    var item;
+                    if (typeof dat == 'string')
+                        item = new UI.DropDownItem(dat, dat);
+                    else {
+                        if (this.ValueKey === 'valueOf')
+                            item = new UI.DropDownItem(dat[this.TextKey], dat);
+                        else
+                            item = new UI.DropDownItem(dat[this.TextKey], dat[this.ValueKey]);
+                    }
+                    this.items.push(item);
+                    item.index = i;
+                    item.jElement.attr('idx', i);
+                    var me = this;
+                    this.Append(item);
+                }
+                this.element.selectedIndex = -1;
+            };
+            /**
+             * Gets underlying data to the drop down items if there is any.
+             */
+            MultiSelect.prototype.getData = function () {
+                return this.items.map(function (d) { return d.data; });
+            };
+            /**
+             * Handeles selection change.  Internal.
+             */
+            MultiSelect.prototype.changeSelection = function () {
+                if (!this.updatingSelected) {
+                    this.selectedIndicies = this.getSelectedIndicies();
+                    this.OnSelectionChanged.fire(this, this.SelectedItems);
+                }
+            };
+            /**
+             * gets the selected indexes internal
+             */
+            MultiSelect.prototype.getSelectedIndicies = function () {
+                if (this.element.selectedOptions === undefined)
+                    return this.getSelectedDropDownsIE();
+                var selected = this.element.selectedOptions;
+                var len = selected.length;
+                var selectedIndicies = [];
+                for (var i = 0; i < len; i++) {
+                    selectedIndicies.push(selected[i].index);
+                }
+                return selectedIndicies;
+            };
+            /**
+             * handles gets indexes in a different way for ie because it doesn't support selectedOptions
+             */
+            MultiSelect.prototype.getSelectedDropDownsIE = function () {
+                var len = this.items.length;
+                var indicies = [];
+                for (var i = 0; i < len; i++) {
+                    if (this.items[0].element.selected)
+                        indicies.push(i);
+                }
+                return indicies;
+            };
+            return MultiSelect;
+        }(UI.TSControl));
+        UI.MultiSelect = MultiSelect;
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
+/// <reference path=".\TSControl.ts" />
+var TSF;
+/// <reference path=".\TSControl.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        /**
+         * Radio button control
+         */
+        var RadioButton = /** @class */ (function (_super) {
+            __extends(RadioButton, _super);
+            /**
+             * A RadioButton control that can be used in the html markup or just constructed plainly in javacsript
+             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
+             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
+             */
+            function RadioButton(ele, logicalParent) {
+                var _this = _super.call(this, ele, logicalParent) || this;
+                if (ele === undefined) {
+                    _this.checkEmptyEle('input');
+                }
+                _this.element.setAttribute('type', 'radio');
+                _this.element.TSControl = _this;
+                return _this;
+            }
+            Object.defineProperty(RadioButton.prototype, "Value", {
+                get: function () {
+                    if (this.value)
+                        return this.value;
+                    else
+                        return this.element.value;
+                },
+                /** Value for the radio button.  If set this way it can be an object as well as a string */
+                set: function (val) {
+                    this.value = val;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(RadioButton.prototype, "OnSelectionChanged", {
+                /** The on change event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
+                get: function () {
+                    var _this = this;
+                    if (!this.onSelectionChanged) {
+                        this.onSelectionChanged = new TSF.Events.UIEvent();
+                        this.element.onchange = function () { return _this.onSelectionChanged.fire(_this, _this.args); };
+                    }
+                    return this.onSelectionChanged;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(RadioButton.prototype, "SelectedValue", {
+                /** Gets or Sets the selected value for the group of radio buttons */
+                get: function () {
+                    var selectedItem = this.SelectedItem;
+                    if (selectedItem === undefined)
+                        return undefined;
+                    if (selectedItem.Value !== undefined)
+                        return selectedItem.Value;
+                },
+                /** Gets the selected value of the radio button group */
+                set: function (val) {
+                    var ctrls = document.getElementsByName(this.Name);
+                    var len = ctrls.length;
+                    for (var i = 0; i < len; i++) {
+                        var ctrl = ctrls[i];
+                        if (ctrl.TSControl !== undefined) {
+                            var tsCtrl = ctrl.TSControl;
+                            if (tsCtrl.Value === val) {
+                                tsCtrl.Checked = true;
+                            }
+                        }
+                        else if (ctrl.value === val) {
+                            ctrl.checked = true;
+                        }
+                    }
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(RadioButton.prototype, "Checked", {
+                /**returns true if the control is selected */
+                get: function () {
+                    return this.element.checked;
+                },
+                /**selects the specific control */
+                set: function (val) {
+                    this.element.checked = val;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(RadioButton.prototype, "Name", {
+                /** name (group) of the radio button */
+                get: function () {
+                    return this.element.name;
+                },
+                set: function (val) {
+                    this.element.name = val;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(RadioButton.prototype, "SelectedItem", {
+                /** returns the ts control if one exists for the selected item otherwise just the html element */
+                get: function () {
+                    var ctrls = document.getElementsByName(this.Name);
+                    var len = ctrls.length;
+                    for (var i = 0; i < len; i++) {
+                        var ctrl = ctrls[i];
+                        if (ctrl.checked) {
+                            if (ctrl.TSControl !== undefined)
+                                return ctrl.TSControl;
+                            else
+                                return ctrl;
+                        }
+                    }
+                    return undefined;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            return RadioButton;
+        }(UI.TSControl));
+        UI.RadioButton = RadioButton;
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
+/// <reference path=".\TSControl.ts" />
+var TSF;
+/// <reference path=".\TSControl.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        /**
+         * Class that represents a Textbox.
+         */
+        var TextBox = /** @class */ (function (_super) {
+            __extends(TextBox, _super);
+            /**
+             * A TextBox control that can be used in the html markup or just constructed plainly in javacsript
+             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
+             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
+             */
+            function TextBox(ele, logicalParent) {
+                var _this = _super.call(this, ele, logicalParent) || this;
+                if (ele === undefined) {
+                    _this.checkEmptyEle('input');
+                }
+                _this.element.setAttribute('type', 'text');
+                var onchanged = _this.jElement.attr('onchange');
+                if (onchanged !== null && onchanged !== undefined) {
+                    _this.OnTextChange.add(function (sender, args) { eval(onchanged); }, (logicalParent === undefined) ? _this : logicalParent);
+                }
+                return _this;
+            }
+            Object.defineProperty(TextBox.prototype, "OnTextChange", {
+                /** The on text change event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
+                get: function () {
+                    var _this = this;
+                    if (!this.onTextChange) {
+                        this.onTextChange = new TSF.Events.UIEvent();
+                        this.element.onchange = function () { return _this.onTextChange.fire(_this, _this.args); };
+                    }
+                    return this.onTextChange;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            return TextBox;
+        }(UI.TSControl));
+        UI.TextBox = TextBox;
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
+/// <reference path="..\TSControl.ts" />
+/// <reference path="..\TSControl.ts" />
+/// <reference path="..\TSControl.ts" />
+var TSF;
+/// <reference path="..\TSControl.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
         var Grid;
         (function (Grid) {
-            var Extensions;
-            (function (Extensions) {
+            /**
+             * Used to resize grid columns in the wunder grid
+             */
+            var Resizer = /** @class */ (function (_super) {
+                __extends(Resizer, _super);
                 /**
-                 *  Used by the wundergrid when no editable cell method is provided by the column to generate an editable checkbox cell
+                 * Used to resize grid columns in the wunder grid
+                 * @param element - element to use as the resizer
+                 * @param grid - the grid being resized
+                 * @param cell - header cell to be resized
+                 * @param width
                  */
-                var WunderCheckboxCell = (function (_super) {
-                    __extends(WunderCheckboxCell, _super);
-                    function WunderCheckboxCell() {
-                        return _super !== null && _super.apply(this, arguments) || this;
+                function Resizer(element, grid, cell, left, width, index) {
+                    var _this = _super.call(this, element) || this;
+                    _this.index = index;
+                    _this.grid = grid;
+                    _this.headerCell = cell;
+                    _this.width = width;
+                    var me = _this;
+                    var style = _this.Style;
+                    style.cursor = 'col-resize';
+                    _this.left = left;
+                    //if (float === 'left')
+                    //    style.margin = '0px 0px 0px -2px';
+                    //else
+                    //    style.margin = '0px -2px 0px 0px';
+                    _this.Style.position = 'absolute';
+                    cell.Style.position = 'relative';
+                    _this.rePosition();
+                    _this.Style.top = '0px';
+                    style.width = width + 'px';
+                    style.height = '100%';
+                    style.display = 'inline-block';
+                    //style.cssFloat = float;
+                    _this.jElement.mouseup(function () { return _this.grid.context.selectedResizer = undefined; });
+                    _this.jElement.mousedown(function (event) {
+                        me.mouseDown(event);
+                    });
+                    _this.OnDoubleClick.add(_this.doubleClick, _this);
+                    return _this;
+                }
+                Resizer.prototype.rePosition = function () {
+                    var _this = this;
+                    var padding = 0;
+                    setTimeout(function () {
+                        if (_this.headerCell.element.style.paddingRight)
+                            padding = parseInt(_this.headerCell.element.style.paddingRight);
+                        if (!_this.left)
+                            _this.Style.left = (_this.headerCell.element.clientWidth - (_this.width - 1) - padding) + 'px';
+                        else
+                            _this.Style.left = '-1px';
+                    }, 18);
+                };
+                /**
+                 *  handles a double click on a column sizer
+                 * @param sender - sizer
+                 * @param args - none
+                 */
+                Resizer.prototype.doubleClick = function (sender, args) {
+                    var maxWidth = 0;
+                    var nodes = this.headerCell.element.childNodes;
+                    var len = nodes.length;
+                    var backupStyle = this.headerCell.Style.whiteSpace;
+                    if (!backupStyle)
+                        backupStyle = 'normal';
+                    this.headerCell.Style.whiteSpace = 'pre';
+                    var headWidth = parseInt(this.headerCell.Style.width.replace('px', ''));
+                    var cellPadding = parseInt(this.headerCell.jElement.css('padding-left').replace('px', '')) + parseInt(this.headerCell.jElement.css('padding-right').replace('px', ''));
+                    for (var i = 0; i < len; i++) {
+                        maxWidth += nodes[i].offsetWidth;
                     }
-                    /** generates the cell */
-                    WunderCheckboxCell.prototype.generateCell = function (value, column, row, grid) {
-                        var _this = this;
-                        var cell = new Grid.WunderCell();
-                        var cbx = new UI.Checkbox();
-                        cbx.Indeterminate = true;
-                        cbx.context.row = row;
-                        cbx.context.col = column;
-                        cbx.OnCheckedChanged.add(function () { return _this.changeValue(cbx, cbx.Checked); }, this);
-                        if (value !== null && value !== undefined)
-                            cbx.Checked = value;
-                        cell.Append(cbx);
-                        return cell;
-                    };
-                    return WunderCheckboxCell;
-                }(Extensions.BaseEditableCell));
-                Extensions.WunderCheckboxCell = WunderCheckboxCell;
-            })(Extensions = Grid.Extensions || (Grid.Extensions = {}));
+                    maxWidth += cellPadding;
+                    this.headerCell.Style.whiteSpace = backupStyle;
+                    len = this.grid.Rows.length;
+                    for (var i = 0; i < len; i++) {
+                        var cell = this.grid.Rows[i].cells[this.index];
+                        var nodes_1 = cell.element.childNodes;
+                        var cellLen = cell.element.childNodes.length;
+                        var width = 0;
+                        var backupStyle_1 = cell.Style.whiteSpace;
+                        if (!backupStyle_1)
+                            backupStyle_1 = 'normal';
+                        cell.Style.whiteSpace = 'pre';
+                        for (var j = 0; j < cellLen; j++) {
+                            width += nodes_1[j].offsetWidth;
+                        }
+                        width += cellPadding;
+                        cell.Style.whiteSpace = backupStyle_1;
+                        if (width > maxWidth)
+                            maxWidth = width;
+                    }
+                    this.headerCell.Style.width = maxWidth + 'px';
+                    var gridWidth = parseInt(this.grid.Style.width.replace('px', ''));
+                    this.grid.Style.width = (gridWidth + (maxWidth - headWidth)) + 'px';
+                    this.rePosition();
+                    if (this.prevResizer)
+                        this.prevResizer.rePosition();
+                };
+                /**
+                 * handles mouse down on the control to start the resizing process
+                 * @param event
+                 */
+                Resizer.prototype.mouseDown = function (event) {
+                    this.grid.context.selectedResizer = this;
+                    this.currentColumnWidth = parseInt(this.headerCell.Style.width.replace('px', ''));
+                    this.currentGridWidth = parseInt(this.grid.Style.width.replace('px', ''));
+                    this.currentMousePageX = event.pageX;
+                    this.grid.context.selectedColumn = this;
+                    this.currentClientWidth = this.headerCell.element.clientWidth;
+                    if (this.left && this.prevResizer)
+                        this.currentResizerLeft = parseFloat(this.prevResizer.Style.left.replace('px', ''));
+                    else
+                        this.currentResizerLeft = parseFloat(this.Style.left.replace('px', ''));
+                };
+                /**
+                 * Handles mouse move events while a column is being resized
+                 * @param event
+                 */
+                Resizer.prototype.onMouseMove = function (event) {
+                    var width = this.width;
+                    var diff = event.pageX - this.currentMousePageX;
+                    var gridStyle = this.grid.Style;
+                    var cellStyle = this.headerCell.Style;
+                    var backup = cellStyle.width;
+                    var clientWidth = this.headerCell.element.clientWidth;
+                    //let gridWidth: any = gridStyle.width.replace('px', '');
+                    cellStyle.width = (this.currentColumnWidth + diff) + 'px';
+                    if (clientWidth === this.headerCell.element.clientWidth)
+                        cellStyle.width = backup;
+                    else {
+                        gridStyle.width = (this.currentGridWidth + diff) + 'px';
+                        if (this.left) {
+                            if (this.prevResizer)
+                                this.prevResizer.Style.left = (this.currentResizerLeft + this.headerCell.element.clientWidth - this.currentClientWidth) + 'px';
+                        }
+                        else
+                            this.Style.left = (this.currentResizerLeft + this.headerCell.element.clientWidth - this.currentClientWidth) + 'px';
+                    }
+                    if (window.getSelection) {
+                        if (window.getSelection().empty) { // Chrome
+                            window.getSelection().empty();
+                        }
+                        else if (window.getSelection().removeAllRanges) { // Firefox
+                            window.getSelection().removeAllRanges();
+                        }
+                    }
+                    else if (document.selection) { // IE?
+                        document.selection.empty();
+                    }
+                };
+                return Resizer;
+            }(UI.TSControl));
+            Grid.Resizer = Resizer;
         })(Grid = UI.Grid || (UI.Grid = {}));
     })(UI = TSF.UI || (TSF.UI = {}));
 })(TSF || (TSF = {}));
 /// <reference path="..\TSControl.ts" />
-/// <reference path="..\TSControl.ts" />
-/// <reference path="..\TSControl.ts" />
 var TSF;
+/// <reference path="..\TSControl.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
@@ -3405,21 +3166,34 @@ var TSF;
             /**
              * Object that represents a cell in the wundergrid.  Has a reference to the underlying cell
              */
-            var WunderColumnHeader = (function (_super) {
-                __extends(WunderColumnHeader, _super);
-                function WunderColumnHeader(ele, logicalParent) {
+            var WunderCell = /** @class */ (function (_super) {
+                __extends(WunderCell, _super);
+                function WunderCell(ele, logicalParent) {
                     var _this = _super.call(this, ele, logicalParent) || this;
-                    _this.checkEmptyEle('th');
+                    _this.checkEmptyEle('td');
+                    _this.textElement = new UI.TSControl(document.createElement('span'));
+                    _this.Append(_this.textElement);
                     return _this;
                 }
-                return WunderColumnHeader;
+                Object.defineProperty(WunderCell.prototype, "Text", {
+                    get: function () {
+                        return this.textElement.Text;
+                    },
+                    set: function (val) {
+                        this.textElement.Text = val;
+                    },
+                    enumerable: false,
+                    configurable: true
+                });
+                return WunderCell;
             }(UI.TSControl));
-            Grid.WunderColumnHeader = WunderColumnHeader;
+            Grid.WunderCell = WunderCell;
         })(Grid = UI.Grid || (UI.Grid = {}));
     })(UI = TSF.UI || (TSF.UI = {}));
 })(TSF || (TSF = {}));
 /// <reference path="..\Column.ts" />
 var TSF;
+/// <reference path="..\Column.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
@@ -3428,7 +3202,7 @@ var TSF;
             /**
              *  Used to specify columns for the wunder grid.
              */
-            var WunderColumn = (function (_super) {
+            var WunderColumn = /** @class */ (function (_super) {
                 __extends(WunderColumn, _super);
                 /**
                  * Used to specify columns for the wunder grid.
@@ -3462,6 +3236,31 @@ var TSF;
 })(TSF || (TSF = {}));
 /// <reference path="..\TSControl.ts" />
 var TSF;
+/// <reference path="..\TSControl.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        var Grid;
+        (function (Grid) {
+            /**
+             * Object that represents a cell in the wundergrid.  Has a reference to the underlying cell
+             */
+            var WunderColumnHeader = /** @class */ (function (_super) {
+                __extends(WunderColumnHeader, _super);
+                function WunderColumnHeader(ele, logicalParent) {
+                    var _this = _super.call(this, ele, logicalParent) || this;
+                    _this.checkEmptyEle('th');
+                    return _this;
+                }
+                return WunderColumnHeader;
+            }(UI.TSControl));
+            Grid.WunderColumnHeader = WunderColumnHeader;
+        })(Grid = UI.Grid || (UI.Grid = {}));
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
+/// <reference path="..\TSControl.ts" />
+var TSF;
+/// <reference path="..\TSControl.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
@@ -3478,7 +3277,7 @@ var TSF;
              * Grid view used to display data in a grid format.  Includes functionality for sorting, column resizing,
              * selection, multi selection, ability to be hooked up to a pager or filter.
              */
-            var WunderGrid = (function (_super) {
+            var WunderGrid = /** @class */ (function (_super) {
                 __extends(WunderGrid, _super);
                 /**
                  * A grid control used for displaying table data
@@ -3556,14 +3355,14 @@ var TSF;
                             this.onSelectionChanged = new TSF.Events.GenericEvent();
                         return this.onSelectionChanged;
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 Object.defineProperty(WunderGrid.prototype, "SelectedValues", {
                     get: function () {
                         return this.state.selectedData;
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 Object.defineProperty(WunderGrid.prototype, "SortTarget", {
@@ -3579,7 +3378,7 @@ var TSF;
                         if (this.enableSorting === undefined)
                             this.enableSorting = true;
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 Object.defineProperty(WunderGrid.prototype, "EnableSorting", {
@@ -3594,7 +3393,7 @@ var TSF;
                         if (this.filteredData)
                             this.createHeaderRow();
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 Object.defineProperty(WunderGrid.prototype, "Editing", {
@@ -3611,7 +3410,7 @@ var TSF;
                             row.Editing = ed;
                         }
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 /**
@@ -3645,7 +3444,7 @@ var TSF;
                             this.dataSource.onEndUpdate.add(this.onEndUpdate, this);
                         }
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 Object.defineProperty(WunderGrid.prototype, "Columns", {
@@ -3669,7 +3468,7 @@ var TSF;
                         this.columns = columns;
                         this.columnsChanged = true;
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 Object.defineProperty(WunderGrid.prototype, "AutoGenerateColumns", {
@@ -3682,7 +3481,7 @@ var TSF;
                         this.autoGenerateColumns = autoGenerateColumns;
                         this.columnsChanged = true;
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 Object.defineProperty(WunderGrid.prototype, "Data", {
@@ -3702,7 +3501,7 @@ var TSF;
                             this.refresh();
                         }
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 Object.defineProperty(WunderGrid.prototype, "SelectedRows", {
@@ -3716,7 +3515,7 @@ var TSF;
                             rows = [];
                         this.selectRows(rows);
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 /*  selects rows on the grid */
@@ -3756,7 +3555,7 @@ var TSF;
                         }
                         this.rows = val;
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 /**
@@ -4000,7 +3799,7 @@ var TSF;
                             $(window).mousemove(function (event) { return _this.mouseMove(event); });
                         }
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 WunderGrid.prototype.addResizers = function () {
@@ -4149,61 +3948,127 @@ var TSF;
                     this.createBody(data);
                     this.updating = false;
                 };
+                /** internal hash of operations for filtering data */
+                WunderGrid.OperationsHash = undefined;
+                /** caches regex expressions so it doesn't have to compile it every time for filtering*/
+                WunderGrid.regexHash = {};
                 return WunderGrid;
             }(UI.TSControl));
-            /** internal hash of operations for filtering data */
-            WunderGrid.OperationsHash = undefined;
-            /** caches regex expressions so it doesn't have to compile it every time for filtering*/
-            WunderGrid.regexHash = {};
             Grid.WunderGrid = WunderGrid;
         })(Grid = UI.Grid || (UI.Grid = {}));
     })(UI = TSF.UI || (TSF.UI = {}));
 })(TSF || (TSF = {}));
-/// <reference path="..\TSControl.ts" />
 var TSF;
 (function (TSF) {
     var UI;
     (function (UI) {
         var Grid;
         (function (Grid) {
-            /**
-             * Object that represents a cell in the wundergrid.  Has a reference to the underlying cell
-             */
-            var WunderCell = (function (_super) {
-                __extends(WunderCell, _super);
-                function WunderCell(ele, logicalParent) {
-                    var _this = _super.call(this, ele, logicalParent) || this;
-                    _this.checkEmptyEle('td');
-                    _this.textElement = new UI.TSControl(document.createElement('span'));
-                    _this.Append(_this.textElement);
-                    return _this;
-                }
-                Object.defineProperty(WunderCell.prototype, "Text", {
-                    get: function () {
-                        return this.textElement.Text;
-                    },
-                    set: function (val) {
-                        this.textElement.Text = val;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                return WunderCell;
-            }(UI.TSControl));
-            Grid.WunderCell = WunderCell;
+            var Extensions;
+            (function (Extensions) {
+                var BaseEditableCell = /** @class */ (function () {
+                    function BaseEditableCell() {
+                    }
+                    BaseEditableCell.prototype.changeValue = function (sender, value) {
+                        var row = sender.context.row;
+                        var col = sender.context.col;
+                        var val = row.Data;
+                        val = eval('val.' + col.dataField.replace(/[;\r\n]*/g, '') + ' = value;');
+                    };
+                    return BaseEditableCell;
+                }());
+                Extensions.BaseEditableCell = BaseEditableCell;
+            })(Extensions = Grid.Extensions || (Grid.Extensions = {}));
+        })(Grid = UI.Grid || (UI.Grid = {}));
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
+/// <reference path="BaseEditableCell.ts" />
+var TSF;
+/// <reference path="BaseEditableCell.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        var Grid;
+        (function (Grid) {
+            var Extensions;
+            (function (Extensions) {
+                var WunderTextCell = /** @class */ (function (_super) {
+                    __extends(WunderTextCell, _super);
+                    function WunderTextCell() {
+                        return _super !== null && _super.apply(this, arguments) || this;
+                    }
+                    WunderTextCell.prototype.generateCell = function (value, column, row, grid) {
+                        var _this = this;
+                        var cell = new Grid.WunderCell();
+                        var txt = new UI.TextBox();
+                        txt.element.style.width = "95%";
+                        txt.context.row = row;
+                        txt.context.col = column;
+                        txt.OnTextChange.add(function () { return _this.changeValue(txt, txt.Value); }, this);
+                        if (value !== null && value !== undefined)
+                            txt.Value = value.toString();
+                        cell.Append(txt);
+                        return cell;
+                    };
+                    return WunderTextCell;
+                }(Extensions.BaseEditableCell));
+                Extensions.WunderTextCell = WunderTextCell;
+            })(Extensions = Grid.Extensions || (Grid.Extensions = {}));
+        })(Grid = UI.Grid || (UI.Grid = {}));
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
+/// <reference path="BaseEditableCell.ts" />
+var TSF;
+/// <reference path="BaseEditableCell.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        var Grid;
+        (function (Grid) {
+            var Extensions;
+            (function (Extensions) {
+                /**
+                 *  Used by the wundergrid when no editable cell method is provided by the column to generate an editable checkbox cell
+                 */
+                var WunderCheckboxCell = /** @class */ (function (_super) {
+                    __extends(WunderCheckboxCell, _super);
+                    function WunderCheckboxCell() {
+                        return _super !== null && _super.apply(this, arguments) || this;
+                    }
+                    /** generates the cell */
+                    WunderCheckboxCell.prototype.generateCell = function (value, column, row, grid) {
+                        var _this = this;
+                        var cell = new Grid.WunderCell();
+                        var cbx = new UI.Checkbox();
+                        cbx.Indeterminate = true;
+                        cbx.context.row = row;
+                        cbx.context.col = column;
+                        cbx.OnCheckedChanged.add(function () { return _this.changeValue(cbx, cbx.Checked); }, this);
+                        if (value !== null && value !== undefined)
+                            cbx.Checked = value;
+                        cell.Append(cbx);
+                        return cell;
+                    };
+                    return WunderCheckboxCell;
+                }(Extensions.BaseEditableCell));
+                Extensions.WunderCheckboxCell = WunderCheckboxCell;
+            })(Extensions = Grid.Extensions || (Grid.Extensions = {}));
         })(Grid = UI.Grid || (UI.Grid = {}));
     })(UI = TSF.UI || (TSF.UI = {}));
 })(TSF || (TSF = {}));
 /// <reference path="..\TSControl.ts" />
 /// <reference path="Extensions\WunderTextCell.ts" />
-/// <reference path="Extensions\WunderTextCell.ts" />
+/// <reference path="Extensions\WunderCheckboxCell.ts" />
 var TSF;
+/// <reference path="..\TSControl.ts" />
+/// <reference path="Extensions\WunderTextCell.ts" />
+/// <reference path="Extensions\WunderCheckboxCell.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
         var Grid;
         (function (Grid) {
-            var WunderRow = (function (_super) {
+            var WunderRow = /** @class */ (function (_super) {
                 __extends(WunderRow, _super);
                 function WunderRow(ele, logicalParent) {
                     var _this = _super.call(this, ele, logicalParent) || this;
@@ -4222,7 +4087,7 @@ var TSF;
                         if (this.data)
                             this.createCells();
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 Object.defineProperty(WunderRow.prototype, "Data", {
@@ -4233,7 +4098,7 @@ var TSF;
                         this.data = data;
                         this.createCells();
                     },
-                    enumerable: true,
+                    enumerable: false,
                     configurable: true
                 });
                 /**
@@ -4283,16 +4148,110 @@ var TSF;
                         }
                     }
                 };
+                WunderRow.editableTextCellGenerator = new Grid.Extensions.WunderTextCell();
+                WunderRow.editableCheckCellGenerator = new Grid.Extensions.WunderCheckboxCell();
                 return WunderRow;
             }(UI.TSControl));
-            WunderRow.editableTextCellGenerator = new Grid.Extensions.WunderTextCell();
-            WunderRow.editableCheckCellGenerator = new Grid.Extensions.WunderCheckboxCell();
             Grid.WunderRow = WunderRow;
+        })(Grid = UI.Grid || (UI.Grid = {}));
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
+/// <reference path="..\..\TSControl.ts" />
+var TSF;
+/// <reference path="..\..\TSControl.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        var Grid;
+        (function (Grid) {
+            var Extensions;
+            (function (Extensions) {
+                /**
+                 *  Used by the wundergrid when no custom header method is provided by the column to generate anthe header
+                 */
+                var SortableColumnHeader = /** @class */ (function (_super) {
+                    __extends(SortableColumnHeader, _super);
+                    function SortableColumnHeader() {
+                        var _this = _super.call(this, document.createElement('div')) || this;
+                        _this.OnClick.add(_this.click, _this);
+                        return _this;
+                    }
+                    /** generates the cell */
+                    SortableColumnHeader.prototype.generateHeader = function (column, target) {
+                        var _this = this;
+                        this.column = column;
+                        this.target = target;
+                        var header = new Grid.WunderColumnHeader();
+                        var textEle = new UI.TSControl(document.createElement('span'));
+                        textEle.Text = column.displayText;
+                        header.Append(textEle);
+                        header.Append(this);
+                        this.Style.display = 'inline-block';
+                        this.element.innerHTML = "▵<br/>▿";
+                        this.Style.lineHeight = '13px';
+                        this.Style.fontSize = '1.5em';
+                        this.Style.height = '100%';
+                        this.Style.cssFloat = 'right';
+                        this.Style.cursor = 'pointer';
+                        this.Class = 'wgSorter';
+                        setTimeout(function () {
+                            var paddingTop = parseInt(header.jElement.css('padding-top').replace('px', ''));
+                            var paddingBottom = parseInt(header.jElement.css('padding-bottom').replace('px', ''));
+                            var elePadTop = parseInt(_this.jElement.css('padding-top').replace('px', ''));
+                            var elePadBottom = parseInt(_this.jElement.css('padding-bottom').replace('px', ''));
+                            _this.Style.marginTop = (((header.element.clientHeight - paddingTop - paddingBottom) / 2) - ((_this.element.clientHeight - elePadTop - elePadBottom) / 2)) + 'px';
+                        }, 1);
+                        target.onSortChanged.add(this.sortChanged, this);
+                        return header;
+                    };
+                    SortableColumnHeader.prototype.click = function (sender, args) {
+                        if (this.order === undefined)
+                            this.target.applySorting([new TSF.Data.SortElement(this.column.dataField, TSF.Data.SortDirection.ASC)], true);
+                        else if (this.order === TSF.Data.SortDirection.ASC)
+                            this.target.applySorting([new TSF.Data.SortElement(this.column.dataField, TSF.Data.SortDirection.DESC)], true);
+                        else
+                            this.target.applySorting([], true);
+                        if (window.getSelection) {
+                            if (window.getSelection().empty) { // Chrome
+                                window.getSelection().empty();
+                            }
+                            else if (window.getSelection().removeAllRanges) { // Firefox
+                                window.getSelection().removeAllRanges();
+                            }
+                        }
+                        else if (document.selection) { // IE?
+                            document.selection.empty();
+                        }
+                    };
+                    SortableColumnHeader.prototype.changeSortingOrder = function (order) {
+                        this.order = order;
+                        if (order === undefined)
+                            this.element.innerHTML = "▵<br/>▿";
+                        else {
+                            if (order === TSF.Data.SortDirection.DESC)
+                                this.element.innerHTML = "▵<br/>▾";
+                            else
+                                this.element.innerHTML = "▴<br/>▿";
+                        }
+                    };
+                    SortableColumnHeader.prototype.sortChanged = function (sorts) {
+                        if (sorts.length < 1)
+                            this.changeSortingOrder();
+                        else if (this.column.dataField === sorts[0].column)
+                            this.changeSortingOrder(sorts[0].sortDirection);
+                        else
+                            this.changeSortingOrder();
+                    };
+                    return SortableColumnHeader;
+                }(UI.TSControl));
+                Extensions.SortableColumnHeader = SortableColumnHeader;
+            })(Extensions = Grid.Extensions || (Grid.Extensions = {}));
         })(Grid = UI.Grid || (UI.Grid = {}));
     })(UI = TSF.UI || (TSF.UI = {}));
 })(TSF || (TSF = {}));
 /// <reference path="..\..\Data\AbstractClasses\AObservable.ts" />
 var TSF;
+/// <reference path="..\..\Data\AbstractClasses\AObservable.ts" />
 (function (TSF) {
     var UI;
     (function (UI) {
@@ -4301,7 +4260,7 @@ var TSF;
             /**
              * Observable state of the grid if needed for architecture
              */
-            var SelectableState = (function (_super) {
+            var SelectableState = /** @class */ (function (_super) {
                 __extends(SelectableState, _super);
                 function SelectableState() {
                     var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -4317,49 +4276,116 @@ var TSF;
         })(States = UI.States || (UI.States = {}));
     })(UI = TSF.UI || (TSF.UI = {}));
 })(TSF || (TSF = {}));
-/// <reference path=".\TSControl.ts" />
 var TSF;
 (function (TSF) {
-    var UI;
-    (function (UI) {
-        /**
-         * Class that represents a Textbox.
+    var Utilities;
+    (function (Utilities) {
+        /*
+         * Date Format 1.2.3
+         * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
+         * MIT license
+         *
+         * Includes enhancements by Scott Trenda <scott.trenda.net>
+         * and Kris Kowal <cixar.com/~kris.kowal/>
+         *
+         * Accepts a date, a mask, or a date and a mask.
+         * Returns a formatted version of the given date.
+         * The date defaults to the current date/time.
+         * The mask defaults to dateFormat.masks.default.
          */
-        var TextBox = (function (_super) {
-            __extends(TextBox, _super);
-            /**
-             * A TextBox control that can be used in the html markup or just constructed plainly in javacsript
-             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
-             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
-             */
-            function TextBox(ele, logicalParent) {
-                var _this = _super.call(this, ele, logicalParent) || this;
-                if (ele === undefined) {
-                    _this.checkEmptyEle('input');
-                }
-                _this.element.setAttribute('type', 'text');
-                var onchanged = _this.jElement.attr('onchange');
-                if (onchanged !== null && onchanged !== undefined) {
-                    _this.OnTextChange.add(function (sender, args) { eval(onchanged); }, (logicalParent === undefined) ? _this : logicalParent);
-                }
-                return _this;
+        var DateFormatter = /** @class */ (function () {
+            function DateFormatter() {
             }
-            Object.defineProperty(TextBox.prototype, "OnTextChange", {
-                /** The on text change event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
-                get: function () {
-                    var _this = this;
-                    if (!this.onTextChange) {
-                        this.onTextChange = new TSF.Events.UIEvent();
-                        this.element.onchange = function () { return _this.onTextChange.fire(_this, _this.args); };
-                    }
-                    return this.onTextChange;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return TextBox;
-        }(UI.TSControl));
-        UI.TextBox = TextBox;
-    })(UI = TSF.UI || (TSF.UI = {}));
+            DateFormatter.pad = function (val, len) {
+                val = String(val);
+                len = len || 2;
+                while (val.length < len)
+                    val = "0" + val;
+                return val;
+            };
+            ;
+            // Regexes and supporting functions are cached through closure
+            DateFormatter.formatDate = function (date, format, utc) {
+                // You can't provide utc if you skip other args (use the "UTC:" mask prefix)
+                if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
+                    format = date;
+                    date = undefined;
+                }
+                // Passing date through Date applies Date.parse, if necessary
+                date = date ? new Date(date) : new Date;
+                if (isNaN(date))
+                    throw SyntaxError("invalid date");
+                format = String(this.masks[format] || format || this.masks["default"]);
+                // Allow setting the utc argument via the mask
+                if (format.slice(0, 4) == "UTC:") {
+                    format = format.slice(4);
+                    utc = true;
+                }
+                var _ = utc ? "getUTC" : "get", d = date[_ + "Date"](), D = date[_ + "Day"](), m = date[_ + "Minutes"](), y = date[_ + "FullYear"](), H = date[_ + "Hours"](), M = date[_ + "Month"](), s = date[_ + "Seconds"](), L = date[_ + "Milliseconds"](), o = utc ? 0 : date.getTimezoneOffset(), flags = {
+                    d: d,
+                    dd: this.pad(d),
+                    ddd: this.i18n.dayNames[D],
+                    dddd: this.i18n.dayNames[D + 7],
+                    M: M + 1,
+                    MM: this.pad(M + 1),
+                    MMM: this.i18n.monthNames[M],
+                    MMMM: this.i18n.monthNames[M + 12],
+                    yy: String(y).slice(2),
+                    yyyy: y,
+                    h: H % 12 || 12,
+                    hh: this.pad(H % 12 || 12),
+                    H: H,
+                    HH: this.pad(H),
+                    m: m,
+                    mm: this.pad(m),
+                    s: s,
+                    ss: this.pad(s),
+                    l: this.pad(L, 3),
+                    L: this.pad(L > 99 ? Math.round(L / 10) : L),
+                    t: H < 12 ? "a" : "p",
+                    tt: H < 12 ? "am" : "pm",
+                    T: H < 12 ? "A" : "P",
+                    TT: H < 12 ? "AM" : "PM",
+                    Z: utc ? "UTC" : (String(date).match(this.timezone) || [""]).pop().replace(this.timezoneClip, ""),
+                    o: (o > 0 ? "-" : "+") + this.pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+                    S: ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
+                };
+                return format.replace(this.token, function ($0) {
+                    return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
+                });
+            };
+            DateFormatter.token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
+            DateFormatter.timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
+            DateFormatter.timezoneClip = /[^-+\dA-Z]/g;
+            // Some common format strings
+            DateFormatter.masks = {
+                "default": "ddd mmm dd yyyy HH:MM:ss",
+                shortDate: "m/d/yy",
+                mediumDate: "mmm d, yyyy",
+                longDate: "mmmm d, yyyy",
+                fullDate: "dddd, mmmm d, yyyy",
+                shortTime: "h:MM TT",
+                mediumTime: "h:MM:ss TT",
+                longTime: "h:MM:ss TT Z",
+                isoDate: "yyyy-mm-dd",
+                isoTime: "HH:MM:ss",
+                isoDateTime: "yyyy-mm-dd'T'HH:MM:ss",
+                isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+            };
+            // Internationalization strings
+            DateFormatter.i18n = {
+                dayNames: [
+                    "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+                    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+                ],
+                monthNames: [
+                    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+                    "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+                ]
+            };
+            return DateFormatter;
+        }());
+        Utilities.DateFormatter = DateFormatter;
+    })(Utilities = TSF.Utilities || (TSF.Utilities = {}));
 })(TSF || (TSF = {}));
 //# sourceMappingURL=TSF.js.map

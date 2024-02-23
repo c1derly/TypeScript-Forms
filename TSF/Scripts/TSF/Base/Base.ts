@@ -32,7 +32,7 @@ namespace TSF.Base {
                         let clss = eval(tsClass);
                         let ctrl: UI.LogicalControl = new clss(node, res.parent);
                         if (!res.parent)
-                            window[res.att] = ctrl;
+                            window[res.att] = <any>ctrl;
                         else
                             res.parent[res.att] = ctrl;
                         parent = ctrl;
@@ -66,7 +66,7 @@ namespace TSF.Base {
                         else
                         ctrl = new TSF.UI.TSControl(node,res.parent);
                     if (!res.parent)
-                        window[res.att] = ctrl;
+                        window[res.att] = <any>ctrl;
                     else
                         res.parent[res.att] = ctrl;
                     parent = ctrl;

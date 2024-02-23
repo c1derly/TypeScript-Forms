@@ -28,6 +28,7 @@
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -378,6 +379,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="tsconfig.json" />
     <TypeScriptCompile Include="Scripts\TSF\Base\Promise.ts" />
     <TypeScriptCompile Include="Scripts\TSF\Data\AsyncDataSource.ts" />
     <TypeScriptCompile Include="Scripts\TSF\Data\Condition.ts" />
@@ -440,7 +442,7 @@
     <TypeScriptCompile Include="Scripts\TSF\Data\Interfaces\IBindable.ts" />
     <TypeScriptCompile Include="Scripts\TSF\Data\Interfaces\IBindableArray.ts" />
     <TypeScriptCompile Include="Scripts\TSF\Data\AbstractClasses\AObservable.ts" />
-    <TypeScriptCompile Include="Scripts\TSF\Data\Interfaces\IDatasource.ts" />
+    <TypeScriptCompile Include="Scripts\TSF\Data\Interfaces\IDataSource.ts" />
     <TypeScriptCompile Include="Scripts\TSF\Data\Observer.ts" />
     <TypeScriptCompile Include="Scripts\TSF\Data\Criteria.ts" />
     <TypeScriptCompile Include="Scripts\TSF\Data\PageChangeEvent.ts" />

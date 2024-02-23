@@ -65,7 +65,7 @@
                 let crit = criteria[i];
                 let col = columnHash[crit.column];
                 if (col && col.dataType === UI.ColumnType.DateTime) {
-                    crit['#dt'] = new Date(crit.value).getTime();
+                    crit['#dt'] = new Date(<any>crit.value).getTime();
                 }
             }
 
@@ -165,7 +165,7 @@
                 var val1 = data[crit.column];
                 var val2 = crit.value;
                 if (col.dataType === UI.ColumnType.DateTime) {
-                    val2 = new Date(val2).getTime();
+                    val2 = new Date(<any>val2).getTime();
                     val1 = new Date(val1).getTime();
                 }
 

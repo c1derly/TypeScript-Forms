@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "System",
+    "lib": [ "dom", "es6", "dom.iterable", "scripthost" ],
+    "allowJs": true,
+    "checkJs": true,
+    "jsx": "react",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "outFile": "./Scripts/TSF/FrameworkOutput/TSF.js",
+    "removeComments": false,
+    "noEmit": false,
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "strictBindCallApply": false,
+    "strictPropertyInitialization": false,
+    "noImplicitThis": false,
+    "alwaysStrict": false,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+   
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "Scripts/TSF/**/*",
+    "Scripts/typeings/**/*"
+  ],
+  "exclude": [
+    "Scripts/TSF/FrameworkOutput",
+    "node_modules",
+    "wwwroot"
+  ]
+}

@@ -1,7 +1,7 @@
 ﻿/// <reference path="..\TSControl.ts" />
 
 /// <reference path="Extensions\WunderTextCell.ts" />
-/// <reference path="Extensions\WunderTextCell.ts" />
+/// <reference path="Extensions\WunderCheckboxCell.ts" />
 namespace TSF.UI.Grid {
     export class WunderRow extends TSControl{
 
