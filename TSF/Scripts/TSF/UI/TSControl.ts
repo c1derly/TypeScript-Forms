@@ -132,11 +132,11 @@ namespace TSF.UI {
         /** Get or set the disabled status of the element */
         public set Disabled(value: boolean) {
             if (value !== this.disabled) {
-                if (value === true) {
-                    this.disabled = true;
+                if (value === false) {
+                    this.disabled = false;
                     this.jElement.removeAttr('disabled');
                 } else {
-                    this.disabled = false;
+                    this.disabled = true;
                     this.jElement.attr('disabled', 'disabled');
                 }
             }

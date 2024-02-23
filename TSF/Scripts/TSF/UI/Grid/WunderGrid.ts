@@ -425,7 +425,7 @@ namespace TSF.UI.Grid {
                 row.grid = this;
                 row.columns = this.columns;
                 row.Editing = this.editing;
-
+                row.RowNumber = i;
                 row.Data = data[i];
                 row.OnClick.add((row) => this.handleSelection(<WunderRow>row), this);
                 this.rows[i] = row;

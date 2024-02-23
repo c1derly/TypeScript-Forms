@@ -13,6 +13,19 @@ namespace TSF.UI.Grid {
         public grid: WunderGrid;
         /** cells of the row */
         public cells: Array<WunderCell> = [];
+        protected rowNumber: number;
+        /**
+         * Gets the row number of the row in the grid
+         */
+        public get RowNumber(): number {
+            return this.rowNumber;
+        }
+        /**
+         * Sets the row number of the row ni the gird. 
+         */
+        set RowNumber(value: number) {
+            this.rowNumber = value;
+        }
         /** columns on the grid to create the row.  Must be set before the data */
         columns: Array<WunderColumn>;
         /** if the row is in editing mode */
