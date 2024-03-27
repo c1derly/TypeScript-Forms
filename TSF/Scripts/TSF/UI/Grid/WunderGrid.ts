@@ -182,8 +182,10 @@ namespace TSF.UI.Grid {
                 for (let i = 0; i < len; i++)
                 {
                     var col = columns[i];
+                    
                     if (typeof (col) == "string")
                         col = columns[i] = new WunderColumn(col);
+                    col.ColumnNumber = i;
                     this.columnHash[col.dataField] = col;
                 }
             }

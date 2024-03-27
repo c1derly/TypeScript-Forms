@@ -84,9 +84,11 @@ namespace TSF.Remote {
          */
         public async call() {
             return new Promise<T>((resolve, reject) => {
-
+                var data;
+                if(this.data)
+                    data = JSON.stringify(this.data);
                 $.ajax({
-                    data: JSON.stringify(this.data),
+                    data: data,
                     url: this.url,
                     type: RequestType[this.requestType],
                     contentType: this.contentType,

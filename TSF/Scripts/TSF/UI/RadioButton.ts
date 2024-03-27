@@ -17,6 +17,58 @@ namespace TSF.UI {
             else
                 return this.element.value;
         }
+        label:Label;
+        /**
+         * gets the label object of the radio button
+         */
+        public get Label(): Label
+        {
+            if(!this.label)
+                this.findLabel()
+            return this.label;
+        }
+        /**
+         * sets the label object to the radio button
+         */
+        public set Label(value:Label)
+        {
+            this.label = value;
+        }
+        /**
+         * gets the label text of the radio button
+         */
+        public get LabelText()
+        {
+            if(!this.label)
+                this.findLabel()
+            if(!this.label)
+                return undefined;
+            else
+                return this.label.Text;
+        }
+        /**
+         * sets the label text of the radio button
+         */
+        public set LabelText(value:string)
+        {
+            if(!this.label)
+                this.findLabel()
+            if(this.label)
+                this.label.Text = value;
+        }
+
+        protected findLabel()
+        {
+            var jLabel = $("label[for='"+this.element.id+"']")
+            if(jLabel.length > 0)
+            {
+                var label:any = jLabel[0];
+                if(label.TSControl)
+                    this.label = label.TSControl;
+                else
+                    this.label = new Label(label);
+            }
+        }
         /** html element of the control*/
         public element: HTMLInputElement;
         /** internal selection change event*/
@@ -57,7 +109,9 @@ namespace TSF.UI {
                 
             }
             this.element.setAttribute('type', 'radio');
+            
             (<any>this.element).TSControl = this;
+
         }
         /** Gets or Sets the selected value for the group of radio buttons */
         public get SelectedValue():any

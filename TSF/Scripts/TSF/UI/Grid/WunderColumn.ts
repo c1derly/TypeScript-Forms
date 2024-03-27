@@ -8,6 +8,16 @@ namespace TSF.UI.Grid {
     export class WunderColumn extends Column{
 
 
+        protected columnNumber;
+        /**
+         * gets the position of the column starting from 0
+         */
+        public get ColumnNumber():number{
+            return this.columnNumber;
+        }
+        public set ColumnNumber(value:number){
+            this.columnNumber = value;
+        }
         /** determines if the particular column is editable.  Default = true */
         public editable: boolean = true;
 

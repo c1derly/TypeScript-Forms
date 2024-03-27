@@ -788,6 +788,8 @@ declare namespace TSF.UI {
         protected onDoubleClick: Events.UIEvent;
         /** The on double click event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
         get OnDoubleClick(): Events.UIEvent;
+        get ID(): string;
+        set ID(value: string);
         /**
          * A Base control that can be used in the html markup or just constructed plainly in javacsript
          * @param id - the id of the control to bind the elemnt to
@@ -1066,6 +1068,29 @@ declare namespace TSF.UI {
 }
 declare namespace TSF.UI {
     /**
+     * Label button control
+     */
+    class Label extends TSControl {
+        get For(): string;
+        set For(value: string);
+        /**
+         * A Label control that can be used in the html markup or just constructed plainly in javacsript
+         * @param id - the id of the control to bind the elemnt to
+         */
+        constructor(id: string);
+        /**
+         * A RadioButton control that can be used in the html markup or just constructed plainly in javacsript
+         * @param ele - html element to bind the control to
+         */
+        constructor(ele: HTMLElement);
+        /**
+         * A RadioButton control that can be used in the html markup or just constructed plainly in javacsript
+         */
+        constructor();
+    }
+}
+declare namespace TSF.UI {
+    /**
   * Drop down control
   */
     class MultiSelect extends TSControl implements Data.Interfaces.IBindableWithKeys, Data.Interfaces.IMultiSelectable {
@@ -1150,6 +1175,24 @@ declare namespace TSF.UI {
         /** Value for the radio button.  If set this way it can be an object as well as a string */
         set Value(val: any);
         get Value(): any;
+        label: Label;
+        /**
+         * gets the label object of the radio button
+         */
+        get Label(): Label;
+        /**
+         * sets the label object to the radio button
+         */
+        set Label(value: Label);
+        /**
+         * gets the label text of the radio button
+         */
+        get LabelText(): string;
+        /**
+         * sets the label text of the radio button
+         */
+        set LabelText(value: string);
+        protected findLabel(): void;
         /** html element of the control*/
         element: HTMLInputElement;
         /** internal selection change event*/
@@ -1572,6 +1615,15 @@ declare namespace TSF.UI.Grid {
         grid: WunderGrid;
         /** cells of the row */
         cells: Array<WunderCell>;
+        protected rowNumber: number;
+        /**
+         * Gets the row number of the row in the grid
+         */
+        get RowNumber(): number;
+        /**
+         * Sets the row number of the row ni the gird.
+         */
+        set RowNumber(value: number);
         /** columns on the grid to create the row.  Must be set before the data */
         columns: Array<WunderColumn>;
         /** if the row is in editing mode */

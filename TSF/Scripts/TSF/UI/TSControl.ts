@@ -25,6 +25,14 @@ namespace TSF.UI {
             return this.onDoubleClick;
         }
 
+        public get ID(){
+            return this.element.id;
+        }
+        public set ID(value:string)
+        {
+            this.element.id = value;
+        }
+
         /**
          * A Base control that can be used in the html markup or just constructed plainly in javacsript
          * @param id - the id of the control to bind the elemnt to

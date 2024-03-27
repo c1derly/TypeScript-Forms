@@ -63,7 +63,7 @@ namespace TSF.UI.Grid {
                 var cells = this.cells;
                 for (let i = 0; i < len; i++) {
                     var column = this.columns[i];
- 
+                    column.ColumnNumber = i;
 
                     var val = this.data;
                     val = eval('val.' + column.dataField.replace(/[;\r\n]*/g, ''));

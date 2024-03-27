@@ -18,6 +18,12 @@ namespace TSF.UI {
             return this.onTextChange;
         }
 
+        override get Text(): string {
+            return this.Value;
+        }
+        override set Text(val: string) {
+            this.Value = val;
+        }
         /**
          * A TextBox control that can be used in the html markup or just constructed plainly in javacsript
          * @param id - the id of the control to bind the elemnt to

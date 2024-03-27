@@ -162,7 +162,7 @@ namespace TSF.UI {
         public bind(data: Array<any>) {
 
             this.jElement.empty();
-
+            this.items = [];
             for (var i = 0; i < data.length; i++) {
                 var dat = data[i];
                 var item: DropDownItem;

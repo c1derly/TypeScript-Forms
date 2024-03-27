@@ -4,6 +4,7 @@ namespace TSF.UI.Grid {
      * Object that represents a cell in the wundergrid.  Has a reference to the underlying cell
      */
     export class WunderCell extends TSControl {
+        
         /** the column used to make the specific cell*/
         column: WunderColumn;
         /** the row the cell belongs to */

@@ -9,7 +9,7 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "outFile": "./Scripts/TSF/FrameworkOutput/TSF.js",
+    "outFile": "C:/Program Files (x86)/Camstar/Camstar Portal/Scripts/TSF/TSF.js",
     "removeComments": false,
     "noEmit": false,
     "strict": false,

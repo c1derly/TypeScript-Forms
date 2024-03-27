@@ -28,7 +28,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -1634,7 +1634,7 @@ var TSF;
         })(AbstractClasses = Data.AbstractClasses || (Data.AbstractClasses = {}));
     })(Data = TSF.Data || (TSF.Data = {}));
 })(TSF || (TSF = {}));
-/// <reference path=".\IDataSource.ts" />
+/// <reference path="./IDataSource.ts" />
 /*Data Structures*/
 var TSF;
 /*Data Structures*/
@@ -1975,6 +1975,16 @@ var TSF;
                 enumerable: false,
                 configurable: true
             });
+            Object.defineProperty(TSControl.prototype, "ID", {
+                get: function () {
+                    return this.element.id;
+                },
+                set: function (value) {
+                    this.element.id = value;
+                },
+                enumerable: false,
+                configurable: true
+            });
             /**
              * Appends a control to the child elements of the current control
              * @param control - the control to append
@@ -2070,12 +2080,12 @@ var TSF;
                 /** Get or set the disabled status of the element */
                 set: function (value) {
                     if (value !== this.disabled) {
-                        if (value === true) {
-                            this.disabled = true;
+                        if (value === false) {
+                            this.disabled = false;
                             this.jElement.removeAttr('disabled');
                         }
                         else {
-                            this.disabled = false;
+                            this.disabled = true;
                             this.jElement.attr('disabled', 'disabled');
                         }
                     }
@@ -2575,6 +2585,45 @@ var TSF;
     var UI;
     (function (UI) {
         /**
+         * Label button control
+         */
+        var Label = /** @class */ (function (_super) {
+            __extends(Label, _super);
+            /**
+             * A Label control that can be used in the html markup or just constructed plainly in javacsript
+             * @param ele - the id or html element to bind the control to or undefined if its not tied to an html object
+             * @param logicalParent - the logical parent entity such as a controller.  Used internally.
+             */
+            function Label(ele, logicalParent) {
+                var _this = _super.call(this, ele, logicalParent) || this;
+                if (ele === undefined) {
+                    _this.checkEmptyEle('label');
+                }
+                _this.element.TSControl = _this;
+                return _this;
+            }
+            Object.defineProperty(Label.prototype, "For", {
+                get: function () {
+                    return this.jElement.attr('for');
+                },
+                set: function (value) {
+                    this.jElement.attr('for', value);
+                },
+                enumerable: false,
+                configurable: true
+            });
+            return Label;
+        }(UI.TSControl));
+        UI.Label = Label;
+    })(UI = TSF.UI || (TSF.UI = {}));
+})(TSF || (TSF = {}));
+/// <reference path=".\TSControl.ts" />
+var TSF;
+/// <reference path=".\TSControl.ts" />
+(function (TSF) {
+    var UI;
+    (function (UI) {
+        /**
       * Drop down control
       */
         var MultiSelect = /** @class */ (function (_super) {
@@ -2854,6 +2903,58 @@ var TSF;
                 enumerable: false,
                 configurable: true
             });
+            Object.defineProperty(RadioButton.prototype, "Label", {
+                /**
+                 * gets the label object of the radio button
+                 */
+                get: function () {
+                    if (!this.label)
+                        this.findLabel();
+                    return this.label;
+                },
+                /**
+                 * sets the label object to the radio button
+                 */
+                set: function (value) {
+                    this.label = value;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            Object.defineProperty(RadioButton.prototype, "LabelText", {
+                /**
+                 * gets the label text of the radio button
+                 */
+                get: function () {
+                    if (!this.label)
+                        this.findLabel();
+                    if (!this.label)
+                        return undefined;
+                    else
+                        return this.label.Text;
+                },
+                /**
+                 * sets the label text of the radio button
+                 */
+                set: function (value) {
+                    if (!this.label)
+                        this.findLabel();
+                    if (this.label)
+                        this.label.Text = value;
+                },
+                enumerable: false,
+                configurable: true
+            });
+            RadioButton.prototype.findLabel = function () {
+                var jLabel = $("label[for='" + this.element.id + "']");
+                if (jLabel.length > 0) {
+                    var label = jLabel[0];
+                    if (label.TSControl)
+                        this.label = label.TSControl;
+                    else
+                        this.label = new UI.Label(label);
+                }
+            };
             Object.defineProperty(RadioButton.prototype, "OnSelectionChanged", {
                 /** The on change event for the html element.  Allows keeping the this of the method correct as well as the ability to add context*/
                 get: function () {
@@ -3650,6 +3751,7 @@ var TSF;
                         row.grid = this;
                         row.columns = this.columns;
                         row.Editing = this.editing;
+                        row.RowNumber = i;
                         row.Data = data[i];
                         row.OnClick.add(function (row) { return _this.handleSelection(row); }, this);
                         this.rows[i] = row;
@@ -4077,6 +4179,22 @@ var TSF;
                     _this.checkEmptyEle('tr');
                     return _this;
                 }
+                Object.defineProperty(WunderRow.prototype, "RowNumber", {
+                    /**
+                     * Gets the row number of the row in the grid
+                     */
+                    get: function () {
+                        return this.rowNumber;
+                    },
+                    /**
+                     * Sets the row number of the row ni the gird.
+                     */
+                    set: function (value) {
+                        this.rowNumber = value;
+                    },
+                    enumerable: false,
+                    configurable: true
+                });
                 Object.defineProperty(WunderRow.prototype, "Editing", {
                     get: function () {
                         return this.editing;
